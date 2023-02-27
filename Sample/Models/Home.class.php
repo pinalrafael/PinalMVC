@@ -1,6 +1,7 @@
 <?php
 
 class Home{
+	public $id;
 
 	function __construct(){
 		
@@ -8,6 +9,10 @@ class Home{
 
 	function getMsg(){
 		return "This is Home Page";
+	}
+
+	function UpdateMsg(){
+		return "This is custom ID:".$this->id;
 	}
 }
 

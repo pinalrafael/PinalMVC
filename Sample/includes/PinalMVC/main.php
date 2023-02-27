@@ -1,40 +1,25 @@
 <?php
 /*
  * CREATOR: RAFAEL PINAL
- * DATE: 24/02/2023
+ * CREATED: 24/02/2023
+ * UPDATED: 27/02/2023
  */
+
+// Init System
+$pmvc_dir = realpath(dirname(__FILE__));
+
+// Load Config
+$pmvc_config_json = file_get_contents($pmvc_dir."/config.json");
+$pmvc_config = json_decode($pmvc_config_json);
+
 // Load Vars
-$pmvc_version = "1.0.0";// Lib version
-$pmvc_root = "/";// Folder root of index.php
-$pmvc_title = "Page Title"; // Title of page.
+$pmvc_version = "1.1.0";// Lib version
+$pmvc_root = $pmvc_config->root;// Folder root of index.php
+$pmvc_title = $pmvc_config->name; // Title of page.
 $pmvc_pars = array();// Array of URL paramters: URL?par0=p0&par1=p1&par2=p2&par3p3
-$pmvc_custom_css = array();// Array custom for link: array( 'href' => 'URL to css', rel => 'stylesheet' )
-$pmvc_custom_script = array();// Array custom for script: array( 'src' => 'URL to script' )
-$pmvc_custom_head = "";// String custom for head: <style>...</style><meta...>
-$pmvc_custom_body = "";// String custom for body: <script>...</script>
 
 // Load system arguments
 $pmvc_args = pmvcGetSysArgs($_GET['request']);// Array of arguments: URL/arg0/arg1/arg2/arg3/
-
-// Get MVC files
-$pmvc_model = pmvcGetURLModel();
-$pmvc_view = pmvcGetURLView();
-$pmvc_controller = pmvcGetURLController();
-
-// Check exists model and controller file
-if(file_exists($pmvc_model)){
-	include($pmvc_model);
-}
-if(file_exists($pmvc_controller)){
-	include($pmvc_controller);
-}
-
-// Check exists view file
-if(!file_exists($pmvc_view)){
-	$pmvc_model = 'Models/Error404.class.php';
-	$pmvc_view = 'Views/PagesErrors/Error404.php';
-	$pmvc_controller = 'Controllers/Error404.php';
-}
 
 /* 
  * Set view custom for function
@@ -42,10 +27,13 @@ if(!file_exists($pmvc_view)){
  * $function: Function of view
  */
 function pmvcView($controller, $function, $pars = array()){
+	global $pmvc_config;
 	global $pmvc_view;
 	global $pmvc_pars;
+
 	$pmvc_pars = $pars;
-	$pmvc_view = 'Views/'.$controller.'/'.$function.'.php';
+
+	$pmvc_view = $pmvc_config->views.$controller.'/'.$function.$pmvc_config->views_suffix.'.php';
 }
 
 /*
@@ -54,6 +42,7 @@ function pmvcView($controller, $function, $pars = array()){
  */
 function pmvcSetRoot($root){
 	global $pmvc_root;
+
 	$pmvc_root = $root;
 }
 
@@ -85,6 +74,19 @@ function pmvcGetSysArgs($request){
  */
 function pmvcGetValueController(){
 	global $pmvc_args;
+	global $pmvc_custom_routes;
+
+	if(count($pmvc_custom_routes) > 0){
+		foreach($pmvc_custom_routes as $item){
+			if($item['type'] == 'C'){
+				if($item['custom'] == $pmvc_args["controller"]){
+					$pmvc_args["controller"] = $item['original'];
+					break;
+				}
+			}
+		}
+	}
+
 	return $pmvc_args["controller"] == '' ? 'Home' : $pmvc_args["controller"];
 }
 
@@ -94,6 +96,19 @@ function pmvcGetValueController(){
  */
 function pmvcGetValueFunction(){
 	global $pmvc_args;
+	global $pmvc_custom_routes;
+
+	if(count($pmvc_custom_routes) > 0){
+		foreach($pmvc_custom_routes as $item){
+			if($item['type'] == 'F'){
+				if($item['custom'] == $pmvc_args["function"]){
+					$pmvc_args["function"] = $item['original'];
+					break;
+				}
+			}
+		}
+	}
+
 	return $pmvc_args["function"] == '' ? 'Index' : $pmvc_args["function"];
 }
 
@@ -103,6 +118,19 @@ function pmvcGetValueFunction(){
  */
 function pmvcGetValueId(){
 	global $pmvc_args;
+	global $pmvc_custom_routes;
+
+	if(count($pmvc_custom_routes) > 0){
+		foreach($pmvc_custom_routes as $item){
+			if($item['type'] == 'I'){
+				if($item['custom'] == $pmvc_args["id"]){
+					$pmvc_args["id"] = $item['original'];
+					break;
+				}
+			}
+		}
+	}
+
 	return $pmvc_args["id"] == '' ? '0' : $pmvc_args["id"];
 }
 
@@ -111,9 +139,12 @@ function pmvcGetValueId(){
  * return: Models/nameofmodel.class.php
  */
 function pmvcGetURLModel(){
+	global $pmvc_config;
 	global $pmvc_args;
+
 	$arg_controller = pmvcGetValueController();
-	return 'Models/'.$arg_controller.'.class.php';
+
+	return $pmvc_config->models.$arg_controller.$pmvc_config->models_suffix.'.php';
 }
 
 /*
@@ -121,10 +152,13 @@ function pmvcGetURLModel(){
  * return: Views/nameofcontroller/nameoffunction.php
  */
 function pmvcGetURLView(){
+	global $pmvc_config;
 	global $pmvc_args;
+
 	$arg_controller = pmvcGetValueController();
 	$arg_function = pmvcGetValueFunction();
-	return 'Views/'.$arg_controller.'/'.$arg_function.'.php';
+
+	return $pmvc_config->views.$arg_controller.'/'.$arg_function.$pmvc_config->views_suffix.'.php';
 }
 
 /*
@@ -132,68 +166,11 @@ function pmvcGetURLView(){
  * return: Controllers/nameofcontroller.php
  */
 function pmvcGetURLController(){
+	global $pmvc_config;
 	global $pmvc_args;
+
 	$arg_controller = pmvcGetValueController();
-	return 'Controllers/'.$arg_controller.'.php';
-}
 
-/*
- * Generate custom head
- */
-function pmvcHead(){
-	global $pmvc_custom_head;
-	global $pmvc_custom_css;
-
-	if(count($pmvc_custom_css) > 0){
-		foreach($pmvc_custom_css as $item){
-			?><link<?php
-			foreach ($item as $key => $value) {
-				echo " ".$key."='".$value."'";
-			}
-			?>></link> <?php
-		}
-	}
-
-	echo $pmvc_custom_head;
-}
-
-/*
- * Generate custom body
- */
-function pmvcBody(){
-	global $pmvc_custom_body;
-	global $pmvc_custom_script;
-
-	if(count($pmvc_custom_script) > 0){
-		foreach($pmvc_custom_script as $item){
-			?><script<?php
-			foreach ($item as $key => $value) {
-				echo " ".$key."='".$value."'";
-			}
-			?>></script> <?php
-		}
-	}
-
-	echo $pmvc_custom_body;
-}
-
-/*
- * Insert custom file css
- * $customArray: array custom array( 'href' => 'URL to css', rel => 'stylesheet' )
- */
-function pmvcCSS($customArray){
-	global $pmvc_custom_css;
-
-	array_push($pmvc_custom_css, $customArray);
-}
-
-/*
- * Insert custom file script
- * $customArray: array custom array( 'src' => 'URL to script' )
- */
-function pmvcScript($customArray){
-	global $pmvc_custom_script;
-
-	array_push($pmvc_custom_script, $customArray);
+	return $pmvc_config->controllers.$arg_controller.$pmvc_config->controllers_suffix.'.php';
 }
 ?>

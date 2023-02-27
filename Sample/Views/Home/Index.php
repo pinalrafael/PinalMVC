@@ -8,3 +8,5 @@
 <a href="<?php echo $pmvc_root; ?>Home/CustomScript">CustomScript</a><br>
 <a href="<?php echo $pmvc_root; ?>Home/CustomHead">CustomHead</a><br>
 <a href="<?php echo $pmvc_root; ?>Home/CustomBootstrap">CustomBootstrap</a><br>
+<a href="<?php echo $pmvc_root; ?>Home/custom_function">CustomFunctionRoute</a><br>
+<a href="<?php echo $pmvc_root; ?>Home/CustomIdRoute/custom_id">CustomIdRoute</a><br>

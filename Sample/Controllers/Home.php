@@ -100,6 +100,23 @@ if(pmvcGetValueFunction() == "Index"){
 	} else if(isset($_POST)){
 	
 	}
+}else if(pmvcGetValueFunction() == "CustomFunctionRoute"){
+	if(isset($_GET)){
+		$msg = "CustomFunctionRoute";
+
+		pmvcView("Home", "Index");
+	} else if(isset($_POST)){
+	
+	}
+}else if(pmvcGetValueFunction() == "CustomIdRoute"){
+	if(isset($_GET)){
+		$pmvc_Model->id = pmvcGetValueId();
+		$msg = $pmvc_Model->UpdateMsg();
+
+		pmvcView("Home", "Index");
+	} else if(isset($_POST)){
+	
+	}
 }else{
 	pmvcView("PagesErrors", "Error404", array('msg' => 'Function '.pmvcGetValueFunction().' not found'));
 }

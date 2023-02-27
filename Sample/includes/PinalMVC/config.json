@@ -1,0 +1,25 @@
+{
+  "root": "/",
+  "models": "Models/",
+  "views": "Views/",
+  "controllers": "Controllers/",
+  "page_errors": "Views/PagesErrors/",
+  "models_suffix": ".class",
+  "views_suffix": "",
+  "controllers_suffix": "",
+  "page_errors_suffix": "",
+  "name": "PinalMVC",
+  "author": "Rafael Pinal",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pinalrafael/PinalMVC"
+  },
+  "keywords": [
+    "php",
+    "mvc"
+  ],
+  "bugs": {
+    "url": "https://github.com/pinalrafael/PinalMVC/issues"
+  },
+  "homepage": "http://rafaelpinal.siteprofissional.com/PinalMVC/"
+}

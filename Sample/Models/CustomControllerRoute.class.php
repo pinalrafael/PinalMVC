@@ -1,6 +1,6 @@
 <?php
 
-class Error404{
+class CustomControllerRoute{
 
 	function __construct(){
 		

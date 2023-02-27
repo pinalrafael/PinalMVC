@@ -1,8 +1,17 @@
-# PT_BR
+# PinalMVC [PT_BR]
 Biblioteca simples para padronização de projetos em PHP no formato MVC.
 
+-----
+- [**Exemplo**](http://rafaelpinal.siteprofissional.com/PinalMVC/).
+- [**Reposiório**](https://github.com/pinalrafael/PinalMVC).
+- [**Releases**](https://github.com/pinalrafael/PinalMVC/releases).
+
+-----
+- Para informar argumentos é necessário informar a URL completa com o controller, function e id.
+- Formato da URL: controller/function/id/arg0/arg1/arg2/arg3/...?par0=Value&par1=Value&par2=Value...
+
 ## INSTRUÇÕES
-Os arquivos de [Sample] comtem um exemplo de uso da biblioteca e suas funções.
+Os arquivos de [Sample] comtem um exemplo completo de uso da biblioteca e suas funções.
 
 ### CONFIGURAÇÕES DO SERVIDOR
 1. Adicione o [mod_rewrite] no arquivo [.htaccess].
@@ -15,46 +24,66 @@ RewriteRule ^(.*)$ index.php/?request=$1 [QSA,L,NC]
 </IfModule>
 ```
 
-### IMPORTAR BIBLIOTECA
-1. Adicione a pasta [Sample\includes\PinalMVC] ao seu projeto.
-2. Adicione as pastas [Controllers], [Models] e [Views] na raiz de seu projeto.
+### CONFIGURANDO INDEX
+1. Crie a pasta [Sample\includes\PinalMVC] ao seu projeto.
+
+2. Crie as pastas [Controllers], [Models] e [Views] na raiz de seu projeto.
+
 3. Crie seu arquivo [index.php].
+
 4. Adicione o seguinte código no arquivo [index.php].
 ```php
 <?php
-include('includes/PinalMVC/main.php');// Inclui a biblioteca adicionada no item 1.
+// Inclui a biblioteca principal.
+include('includes/PinalMVC/main.php');
+// Inclui a biblioteca para customização do HTML.
+include('includes/PinalMVC/customhtml.php');
+// Inclui a biblioteca para a customização das Rotas.
+include('includes/PinalMVC/customroutes.php');
 
-pmvcSetRoot("/Test/");// Opcional para quando adicioner em uma sub pasta da raiz do servidor. Se não informar será '/'.
-
+// Inicializa a biblioteca.
+include('includes/PinalMVC/setup.php');
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<!-- ADICIONE SUAS TAGS DO HEAD DO SITE -->
-
 		<?php pmvcHead(); ?>
 	</head>
 	<body>
-	
-	<?php require($pmvc_view); ?>
-
-	<!-- ADICIONE SEUS SCRIPTS DO SITE -->
-
-	<?php pmvcBody(); ?>
+		<?php require($pmvc_view); ?>
+		<!-- ADICIONE SEUS SCRIPTS DO SITE -->
+		<?php pmvcBody(); ?>
 	</body>
 </html>
 ```
-4. Configure o arquivo [index.php] como desejar mas lembre-se de manter os [pmvcHead()], [require($pmvc_view)] e [pmvcBody()] no arquivo.
 
-### USANDO A BIBLIOTECA
+4. Configure o arquivo [index.php] como desejar mas lembre-se de manter os include, [pmvcHead()], [require($pmvc_view)] e [pmvcBody()] no arquivo.
+
+### CONFIGURANDO ARQUIVOS MODEL, VIEW E CONTROLLER
 OBS: Todos os nomes de arquivos, pastas e funções devem ser iguais na integra.
+
 1. Para criar uma view adicione a pasta com o nome desejado. Exemplo: [Teste].
-2. Crie os arquivos views na pasta criada com as informações desejadas na pasta adicionada. Exemplo: [Index.php], [Create.php], [Update.php] e [Delete.php].
-3. Crie o arquivo [Teste.class.php] em [Models] para adicionar classes ao seu projeto.
+
+2. Crie os arquivos views na pasta criada com as informações desejadas na pasta adicionada como no seguinte código. Exemplo: [Index.php], [Create.php], [Update.php], [Delete.php] ou outro nome de função que desejar.
+```php
+<h1>TESTE INDEX</h1>
+```
+
+3. Crie o arquivo [Teste.class.php] em [Models] para adicionar uma classe para [Teste] como no seguinte código.
+```php
+<?php
+class Teste{
+	function __construct(){
+		
+	}
+}
+?>
+```
+
 4. Crie o arquivo [Teste.php] em [Controllers] com o seguinte código.
 ```php
 <?php
-
 $pmvc_title = "Teste";// Nome da página.
 $pmvc_Model = new Teste();// Criar um Model da página.
 
@@ -85,27 +114,229 @@ if(pmvcGetValueFunction() == "Index"){// Nomes dos arquivos e funções como criad
 }else{
 	pmvcView("PagesErrors", "Error404", array('msg' => 'Função: '.pmvcGetValueFunction().' não encontrada!'));
 }
-// É possível criar outras funções sem arquivos em views sendo apenas necessário chamar uma view.
 ?>
 ```
 
+#### DICAS
+- É possível criar outras funções sem arquivo de view sendo apenas necessário chamar uma view já criada. Veja [FUNÇÕES - 1.].
+
 ## DOCUMENTAÇÃO
-1. Variáveis:
-$pmvc_version: Exibe a versão da biblioteca.
-$pmvc_title: Adicionado em cada Controller para informar o título da página que será exibido.
-$pmvc_Model: Classe modelo.
-$pmvc_custom_head: String com tags adicionais em Head. Exemplo: <style>...</style><meta...>
-$pmvc_custom_body: String com tags adicionais em Body. Exemplo: <script>...</script>
-$pmvc_args: Argumentos adicionais da URL. Exemplo: Controller/Function/Id/Arg0/Arg1/Arg2/Arg3/... para acessar use: $pmvc_args["arg0"]...
-$_GET["par1"]...: Para acessar os parâmetros da URL. Exemplo: Controller/Function/Id?par1=Value&par2=Value&par3=Value
-$pmvc_pars: Exibe os parâmetros informados em [pmvcView]. Exemplo: $pmvc_pars[key]
-2. Funções:
-pmvcView($controller, $function, $pars = array()): Adiciona uma view para uma função do controller sem view.
-pmvcSetRoot($root): Atualiza a pasta root.
-pmvcGetValueController(): Recebe o valor do Controller atual.
-pmvcGetValueFunction(): Recebe o valor da function atual.
-pmvcGetValueId(): Recebe o valor do id atual.
-pmvcHead(): Gera o Head customizado.
-pmvcBody(): Gera o Body customizado.
-pmvcCSS($customArray): Adiciona um CSS customizado. Exemplo: array( 'href' => 'URL to css', rel => 'stylesheet' ).
-pmvcScript($customArray): Adiciona um Script customizado. Exemplo: array custom array( 'src' => 'URL to script' ).
+- index.php: arquivo index da raiz.
+- Model: arquivo de classe modelo. Exemplo: Modelo.class.php.
+- View: arqivo de visualização da página. Exemplo: Visualizacao/Index.php.
+- Controller: arquivo de funções do controlador. Exemplo: Controlador.php.
+- main.php: arquivo main com as funções principais.
+- customroutes.php: arquivo com as funções de rotas personalizadas
+
+### VARIÁVEIS
+1. Exibe a versão da biblioteca. 
+```php
+<?php 
+echo $pmvc_version; 
+?>
+```
+
+2. Informa e exibe o título da página. 
+```php
+<?php 
+// No controller
+$pmvc_title = "Título";
+
+// No index.php
+?>
+<title>... <?php echo $pmvc_title; ?> ...</title>
+```
+
+3. Manibulando o Model. 
+```php
+<?php 
+// No controller
+$pmvc_Model = new ModelClass();
+
+// Na function
+$pmvc_Model->classobject = "Valor do objeto";
+
+// Na view
+echo $pmvc_Model->classobject;
+?>
+```
+
+4. Informa e exibe tags do head customizadas. Será exibido em [FUNÇÕES - 8.]
+```php
+<?php 
+$pmvc_custom_head = "<style>...</style><meta...>";
+?>
+```
+
+5. Informa e exibe tags do body customizadas. Será exibido em [FUNÇÕES - 9.]
+```php
+<?php 
+$pmvc_custom_body = "<script>...</script>";
+?>
+```
+
+6. Exibe argumentos da URL. controller/function/id/arg0/arg1/arg2/arg3/...
+```php
+<?php 
+// Deve ser usada após o main.php
+echo $pmvc_args["controller"];
+echo $pmvc_args["function"];
+echo $pmvc_args["id"];
+echo $pmvc_args["arg0"];
+echo $pmvc_args["arg1"];
+echo $pmvc_args["arg2"];
+...
+?>
+```
+
+7. Exibe parâmetros da URL. controller/function/id?par0=Value&par1=Value&par2=Value
+```php
+<?php 
+echo $_GET["par0"];
+echo $_GET["par1"];
+echo $_GET["par2"];
+...
+?>
+```
+
+8. Exibe parâmetros de view informados na função pmvcView($controller, $function, $pars = array()).
+- key: valor do kay/index informado em $pars. Para informar os parâmetros [FUNÇÕES - 1.]
+```php
+<?php 
+echo $pmvc_pars[key];
+?>
+```
+
+### FUNÇÕES
+1. pmvcView: Chamar uma view no controller. Por padrão será chamada a view com o nome da function.
+- $controller: nome do controller que se encontra a view.
+- $function: nome da função do controller que se encontra a view.
+- $pars: array de parâmetros opcionais que podem ser enviados para a view. Para receber os parâmetros veja [VARIÁVEIS - 8.]
+```php
+<?php 
+// Sem parâmetros
+pmvcView('Controlador', 'Funcao');
+
+// Com parâmetros
+pmvcView('Controlador', 'Funcao', array( 'key' => 'value' ));
+?>
+```
+
+2. pmvcSetRoot: Configurar a pasta raiz do software no servidor. Opcional, o padrão será '/'.
+- $root: nome do controller que se encontra a view.
+```php
+<?php 
+// No index.php após o include do main
+pmvcSetRoot("/Pasta/");
+?>
+```
+
+3. pmvcGetValueController: Recebe o valor do Controller atual.
+```php
+<?php 
+echo pmvcGetValueController();
+?>
+```
+
+4. pmvcGetValueFunction: Recebe o valor da function atual.
+```php
+<?php 
+echo pmvcGetValueFunction();
+?>
+```
+
+5. pmvcGetValueId: Recebe o valor do id atual.
+```php
+<?php 
+echo pmvcGetValueId();
+?>
+```
+
+6. pmvcCSS: Adiciona um CSS customizado. Será exibido em [FUNÇÕES - 8.].
+- $customArray: array com os atributos e valores da tag link.
+	- 'Key' => 'Value'.
+```php
+<?php 
+mvcCSS(array( 'href' => 'URL to css', 'rel' => 'stylesheet' ));
+?>
+```
+
+7. pmvcScript: Adiciona um Script customizado. Será exibido em [FUNÇÕES - 9.].
+- $customArray: array com os atributos e valores da tag script.
+	- 'Key' => 'Value'.
+```php
+<?php 
+pmvcScript(array( 'src' => 'URL to script' ));
+?>
+```
+
+8. pmvcHead: Gera o Head customizado.
+```php
+<head>... <?php
+// No index.php
+echo pmvcHead(); 
+?> ...</head>
+```
+
+9. pmvcBody: Gera o Body customizado.
+```php
+<body>... <?php 
+// No index.php
+echo pmvcBody(); 
+?> ...</body>
+```
+
+10. pmvcCustomRoutes: Adiciona uma rota customizada.
+- $customArray: array da rota customizada.
+	- type: Tipo de rota: C -> Controller, F -> Function e I -> Id.
+	- original: Valor original da rota no código e arquivos.
+	- custom: Valor da rota customizada em URL.
+```php
+<?php
+// No index.php após o include do main, customroutes e antes do setup.
+
+// Se chamar custom_controller na sua URL, o arquivo CustomControllerRoute.php será chamado.
+pmvcCustomRoutes(array( 'type' => 'C', 
+'original' => 'CustomControllerRoute', 
+'custom' => 'custom_controller' ));
+
+// Se chamar custom_function na sua URL, a função CustomFunctionRoute será chamada no controller.
+pmvcCustomRoutes(array( 'type' => 'F', 
+'original' => 'CustomFunctionRoute', 
+'custom' => 'custom_function' ));
+
+// Se chamar custom_id na sua URL, o Id 0123456789 será retornado em pmvcGetValueId().
+pmvcCustomRoutes(array( 'type' => 'I', 
+'original' => '0123456789', 
+'custom' => 'custom_id' ));
+?>
+```
+
+### CONFIGURAÇÕES JSON
+Arquivo json de configurações da biblioteca em: [includes\PinalMVC\config.json].
+#### ATENÇÃO: AO ATUALIZAR A BIBLIOTECA, CASO TENHA ALTERADO O ARQUIVO DE CONFIGURAÇÕES SERÁ NECESSÁRIO ATUALIZA-LO MANUALMENTE PARA NÃO PERDER SUAS CONFIGURAÇÕES.
+- root: pasta root do projeto, o mesmo pode substituir a função [pmvcSetRoot()].
+- models: pasta de arquivos de modelos sendo iniciado na raiz do projeto.
+- views: pasta de arquivos de views sendo iniciado na raiz do projeto.
+- controllers: pasta de arquivos de controllers sendo iniciado na raiz do projeto.
+- page_errors: pasta de views de erros sendo iniciado na raiz do projeto.
+- models_suffix: sufixo dos arquivos de modelo no formato: Nome[Sufixo].php.
+- views_suffix: sufixo dos arquivos de views no formato: Nome[Sufixo].php. Não informar na URL.
+- controllers_suffix: sufixo dos arquivos de controller no formato: Nome[Sufixo].php. Não informar na URL.
+- page_errors_suffix: sufixo dos arquivos de views de erros no formato: Nome[Sufixo].php. Não informar na URL.
+
+## DICAS
+- É possível configurar as rotas no banco de dados de forma dinâmica, usando $pmvc_args["controller"] ou $pmvc_args["function"] ou $pmvc_args["id"] para acessar os seus valores da URL e buscar o valor de 'original'. Veja [VARIÁVEIS - 6.] e [FUNÇÕES - 10.].
+
+## SUPORTE
+- Bugs, dúvidas e sugestões? Crie um issue.
+- [**Meu Portfólio**](http://rafaelpinal.siteprofissional.com/).
+- [**Siga-me**](https://github.com/pinalrafael?tab=followers) para minhas próximas criações.
+
+# TODO
+- [ ] Criador e gerenciador do projeto.
+- [ ] Configurar e salvar as configurações de forma visual.
+- [ ] Configurações do projeto sincronizadas com as configurações da biblioteca.
+- [ ] Busca e download de atualizações da biblioteca mantendo as configurações.
+- [ ] Criador de arquivos no padrão das configurações de forma visual.
+- [ ] Editor PHP no projeto.

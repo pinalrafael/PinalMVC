@@ -9,7 +9,7 @@ class NewPage{
 	}
 
 	function UpdateMsg(){
-		$this->msg = "This is the of ID:".$this->id;
+		$this->msg = "This is the ID:".$this->id;
 	}
 }
 
