@@ -10,7 +10,25 @@ Biblioteca simples para padronização de projetos em PHP no formato MVC.
 - Para informar argumentos é necessário informar a URL completa com o controller, function e id.
 - Formato da URL: controller/function/id/arg0/arg1/arg2/arg3/...?par0=Value&par1=Value&par2=Value...
 
-## INSTRUÇÕES
+## INSTRUÇÕES DE FORMA AUTOMÁTICA
+1. Faça download e instalo o software desktop PinalMVC.
+2. Para criar um projeto clique em Novo Projeto.
+	- Caminho (obrigatório): selecione o caminho onde será criado o projeto.
+	- Nome (obrigatório): insira um nome para o projeto.
+	- Sufixo Model (opcional): sufixo para os arquivos do Model. Ficará após o nome do arquivo e antes do .php.
+	- Sufixo View (opcional): sufixo para os arquivos da View. Ficará após o nome do arquivo e antes do .php.
+	- Sufixo Controller (opcional): sufixo para os arquivos do Controller. Ficará após o nome do arquivo e antes do .php.
+	- Sufixo Page Error (opcional): sufixo para os arquivos das páginas de erro. Ficará após o nome do arquivo e antes do .php.
+	- Clique em Criar para criar um projeto com as conficurações iniciais.
+3. Para abrir um projeto já criado clique em Carregar Projeto e selecione o arquivo do projeto desejado.
+4. Com o projeto aberto, para atualizar a biblioteca PinalMVC clique em Atualizar Biblioteca.
+5. Com o projeto aberto, para atualizar adicionar arquivos padrões de forma rápida, clique em Novo Arquivo.
+	- Nome (obrigatório): insira um nome para a rota e arquivos.
+	- Criar (opcional): selecione os arquivos que deseja criar entre Model, View e Controller.
+	- Controller (opcional): selecione as configurações padões do seu controller entre CRUD e POST/GET.
+	- Página (opcional): selecione se deseja criar como página de erro.
+
+## INSTRUÇÕES DE FORMA MANUAL
 Os arquivos de [Sample] comtem um exemplo completo de uso da biblioteca e suas funções.
 
 ### CONFIGURAÇÕES DO SERVIDOR
@@ -332,11 +350,3 @@ Arquivo json de configurações da biblioteca em: [includes\PinalMVC\config.json].
 - Bugs, dúvidas e sugestões? Crie um issue.
 - [**Meu Portfólio**](http://rafaelpinal.siteprofissional.com/).
 - [**Siga-me**](https://github.com/pinalrafael?tab=followers) para minhas próximas criações.
-
-# TODO
-- [ ] Criador e gerenciador do projeto.
-- [ ] Configurar e salvar as configurações de forma visual.
-- [ ] Configurações do projeto sincronizadas com as configurações da biblioteca.
-- [ ] Busca e download de atualizações da biblioteca mantendo as configurações.
-- [ ] Criador de arquivos no padrão das configurações de forma visual.
-- [ ] Editor PHP no projeto.
