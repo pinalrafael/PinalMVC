@@ -67,16 +67,21 @@ namespace PinalMVC
                     return;
                 }
 
+                if (!Directory.Exists(txtCaminho.Text.Trim()))
+                {
+                    Directory.CreateDirectory(txtCaminho.Text.Trim());
+                }
+
                 // Carregando configurações
                 lblMsg.Text = "Criando configurações";
-                Form1.Project.nameproject = txtNome.Text.Trim();
+                Form1.Project.nameproject = Form1.RemoveAcentos(txtNome.Text.Trim());
                 Form1.Project.models_suffix = txtSufixoModel.Text.Trim();
                 Form1.Project.views_suffix = txtSufixoView.Text.Trim();
                 Form1.Project.controllers_suffix = txtSufixoController.Text.Trim();
                 Form1.Project.page_errors_suffix = txtSufixoPageError.Text.Trim();
 
                 // Criando pastas
-                string dirproject = txtCaminho.Text.Trim() + txtNome.Text.Trim();
+                string dirproject = txtCaminho.Text.Trim() + Form1.RemoveAcentos(txtNome.Text.Trim());
                 lblMsg.Text = "Criando: " + dirproject;
                 if (!Directory.Exists(dirproject))
                 {
@@ -249,7 +254,7 @@ include('" + Form1.Project.includes + @"setup.php');
 
                 // Criando arquivo de projeto
                 lblMsg.Text = "Criando arquivo de projeto";
-                using (StreamWriter writer = new StreamWriter(dirproject + "/" + txtNome.Text + Form1.Ext, false))
+                using (StreamWriter writer = new StreamWriter(dirproject + "/" + Form1.RemoveAcentos(txtNome.Text) + Form1.Ext, false))
                 {
                     string jsonproject = JsonConvert.SerializeObject(Form1.Project);
                     writer.WriteLine(jsonproject);
@@ -285,6 +290,21 @@ include('" + Form1.Project.includes + @"setup.php');
             }
 
             this.Enabled = true;
+        }
+
+        private void txtNome_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                if (!(char.IsDigit(e.KeyChar)) && !(char.IsLetter(e.KeyChar)))
+                {
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

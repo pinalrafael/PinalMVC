@@ -11,6 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Collections.ObjectModel;
+using PinalMVC.Enums;
 
 namespace PinalMVC
 {
@@ -26,6 +29,7 @@ namespace PinalMVC
             try
             {
                 this.Text = Form1.Project.nameproject;
+                Form1.SetRecente(Form1.ProjectDir, Form1.Project.nameproject);
 
                 this.Activate();
             }
@@ -65,6 +69,34 @@ namespace PinalMVC
             {
                 frmNovoArquivo frmNovoArquivo = new frmNovoArquivo();
                 frmNovoArquivo.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void treeProjeto_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            try
+            {
+                if (treeProjeto.SelectedNode != null)
+                {
+                    object[] tag = (object[])treeProjeto.SelectedNode.Tag;
+                    Process.Start((string)tag[0]);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void frmProjeto_Activated(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdateArvore();
             }
             catch (Exception ex)
             {
@@ -122,6 +154,8 @@ namespace PinalMVC
                 Form1.AtualizaConfig(dirproject);
 
                 lblMsg.Text = "Atualização concluída";
+
+                this.UpdateArvore();
             }
             catch (Exception ex)
             {
@@ -129,6 +163,162 @@ namespace PinalMVC
             }
 
             this.Enabled = true;
+        }
+
+        private void UpdateArvore() 
+        {
+            TreeNode treeNode = new TreeNode(Form1.Project.nameproject);
+            treeNode.ImageIndex = 0;
+            treeNode.Tag = new object[] { Form1.ProjectDir, TypesNodeTree.RAIZ };
+
+            this.AddNode(treeProjeto.Nodes, treeNode);
+
+            this.CreateNodes(treeProjeto.Nodes[0], Form1.ProjectDir);
+
+            treeProjeto.Nodes[0].Expand();
+
+            this.ValidaNode(treeProjeto.Nodes);
+        }
+
+        private void ValidaNode(TreeNodeCollection treeNodeCollection)
+        {
+            volta:
+            foreach (TreeNode item in treeNodeCollection)
+            {
+                object[] tag = (object[])item.Tag;
+
+                if ((TypesNodeTree)tag[1] == TypesNodeTree.FOLDER ||
+                    (TypesNodeTree)tag[1] == TypesNodeTree.RAIZ)
+                {
+                    if (!Directory.Exists((string)tag[0]))
+                    {
+                        item.Nodes.Clear();
+                        treeNodeCollection.Remove(item);
+                        goto volta;
+                    }
+                    this.ValidaNode(item.Nodes);
+                }
+                else if ((TypesNodeTree)tag[1] == TypesNodeTree.FILE)
+                {
+                    if (!File.Exists((string)tag[0]))
+                    {
+                        treeNodeCollection.Remove(item);
+                        goto volta;
+                    }
+                }
+            }
+        }
+
+        private void AddNode(TreeNodeCollection treeNodeCollection, TreeNode treeNode)
+        {
+            bool encontrado = false;
+            foreach (TreeNode item in treeNodeCollection)
+            {
+                if(item.Text == treeNode.Text)
+                {
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (!encontrado)
+            {
+                treeNodeCollection.Add(treeNode);
+
+                List<TreeNode> list = (from a in treeNodeCollection.Cast<TreeNode>()
+                                      orderby ((object[])a.Tag)[1], a.Text ascending
+                                      select a).ToList();
+
+                treeNodeCollection.Clear();
+                treeNodeCollection.AddRange(list.ToArray());
+            }
+        }
+
+        private void CreateNodes(TreeNode node, string dir)
+        {
+            int x = 0;
+            foreach (var item in Directory.GetDirectories(dir))
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(item);
+
+                TreeNode treeNode = new TreeNode(directoryInfo.Name);
+                if (directoryInfo.GetFiles().Count() > 0 || directoryInfo.GetDirectories().Count() > 0)
+                {
+                    treeNode.ImageIndex = 1;
+                }
+                else
+                {
+                    treeNode.ImageIndex = 2;
+                }
+                treeNode.SelectedImageIndex = treeNode.ImageIndex;
+                treeNode.Tag = new object[] { directoryInfo.FullName, TypesNodeTree.FOLDER };
+
+                this.AddNode(node.Nodes, treeNode);
+
+                this.CreateNodes(node.Nodes[x], item);
+
+                x++;
+            }
+
+            foreach (var item in Directory.GetFiles(dir))
+            {
+                FileInfo fileInfo = new FileInfo(item);
+
+                TreeNode treeNode = new TreeNode(fileInfo.Name);
+                if(fileInfo.Extension == Form1.Ext)
+                {
+                    treeNode.ImageIndex = 0;
+                    continue;
+                }
+                else if (fileInfo.Extension == ".json")
+                {
+                    treeNode.ImageIndex = 4;
+                }
+                else if (fileInfo.Extension == ".png" || 
+                    fileInfo.Extension == ".jpg" || 
+                    fileInfo.Extension == ".jpeg" || 
+                    fileInfo.Extension == ".gif" ||
+                    fileInfo.Extension == ".ico")
+                {
+                    treeNode.ImageIndex = 5;
+                }
+                else if (fileInfo.Extension == ".php")
+                {
+                    treeNode.ImageIndex = 6;
+                }
+                else if (fileInfo.Extension == ".xml")
+                {
+                    treeNode.ImageIndex = 7;
+                }
+                else if (fileInfo.Extension == ".txt")
+                {
+                    treeNode.ImageIndex = 8;
+                }
+                else if (fileInfo.Extension == ".css")
+                {
+                    treeNode.ImageIndex = 9;
+                }
+                else if (fileInfo.Extension == ".html")
+                {
+                    treeNode.ImageIndex = 10;
+                }
+                else if (fileInfo.Extension == ".js")
+                {
+                    treeNode.ImageIndex = 11;
+                }
+                else if (fileInfo.Extension == ".htaccess")
+                {
+                    treeNode.ImageIndex = 12;
+                }
+                else
+                {
+                    treeNode.ImageIndex = 3;
+                }
+                treeNode.SelectedImageIndex = treeNode.ImageIndex;
+                treeNode.Tag = new object[] { fileInfo.FullName, TypesNodeTree.FILE };
+
+                this.AddNode(node.Nodes, treeNode);
+            }
         }
     }
 }

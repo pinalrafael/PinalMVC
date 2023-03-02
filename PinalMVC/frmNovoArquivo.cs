@@ -47,9 +47,24 @@ namespace PinalMVC
                     return;
                 }
 
-                Form1.CriarArquivo(txtNome.Text.Trim(), chbModel.Checked, chbView.Checked, chbController.Checked, chbCRUD.Checked, chbPOSTGET.Checked, chbErrorPage.Checked);
+                Form1.CriarArquivo(Form1.RemoveAcentos(txtNome.Text.Trim()), chbModel.Checked, chbView.Checked, chbController.Checked, chbCRUD.Checked, chbPOSTGET.Checked, chbErrorPage.Checked);
 
                 this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void txtNome_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                if (!(char.IsDigit(e.KeyChar)) && !(char.IsLetter(e.KeyChar)))
+                {
+                    e.Handled = true;
+                }
             }
             catch (Exception ex)
             {

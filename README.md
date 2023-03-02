@@ -1,5 +1,6 @@
 # PinalMVC [PT_BR]
-Biblioteca simples para padronização de projetos em PHP no formato MVC.
+- Software C# desktop para criação do projeto, atualização da biblioteca e criação dos arquivos nos padões da biblioteca.
+- Biblioteca simples para padronização de projetos em PHP no formato MVC.
 
 -----
 - [**Exemplo**](http://rafaelpinal.siteprofissional.com/PinalMVC/).
@@ -11,7 +12,7 @@ Biblioteca simples para padronização de projetos em PHP no formato MVC.
 - Formato da URL: controller/function/id/arg0/arg1/arg2/arg3/...?par0=Value&par1=Value&par2=Value...
 
 ## INSTRUÇÕES DE FORMA AUTOMÁTICA
-1. Faça download e instalo o software desktop PinalMVC.
+1. Faça download e instale o software desktop PinalMVC.
 2. Para criar um projeto clique em Novo Projeto.
 	- Caminho (obrigatório): selecione o caminho onde será criado o projeto.
 	- Nome (obrigatório): insira um nome para o projeto.

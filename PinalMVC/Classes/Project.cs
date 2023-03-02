@@ -9,6 +9,7 @@ namespace PinalMVC.Classes
     public class Project
     {
         public string nameproject { get; set; }
+        public DateTime createdate { get; set; }
         public string includes { get; set; }
         public string root { get; set; }
         public string models { get; set; }
@@ -28,6 +29,7 @@ namespace PinalMVC.Classes
         public Project()
         {
             this.nameproject = "NewProject" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            this.createdate = DateTime.Now;
             this.includes = "includes/PinalMVC/";
             this.root = "/";
             this.models = "Models/";

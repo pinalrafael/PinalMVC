@@ -2,12 +2,15 @@
 using PinalMVC.Classes;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -23,6 +26,7 @@ namespace PinalMVC
         public static string SourcesDir { get; set; }
         public static Project Project { get; set; }
         public static string ProjectDir { get; set; }
+        public static List<string> ListaRecentes { get; set; }
 
         public Form1()
         {
@@ -36,6 +40,7 @@ namespace PinalMVC
             try
             {
                 ProjectDir = "";
+                ListaRecentes = new List<string>();
 
                 PatchDoc = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + Nome;
 
@@ -44,6 +49,8 @@ namespace PinalMVC
                 {
                     Directory.CreateDirectory(SourcesDir);
                 }
+
+                this.UpdateRecentes();
             }
             catch (Exception ex) 
             {
@@ -63,6 +70,7 @@ namespace PinalMVC
                 {
                     frmProjeto frmProjeto = new frmProjeto();
                     frmProjeto.ShowDialog(this);
+                    this.UpdateRecentes();
                 }
             }
             catch (Exception ex)
@@ -96,12 +104,8 @@ namespace PinalMVC
 
                 if (dr == System.Windows.Forms.DialogResult.OK)
                 {
-                    FileInfo fileInfo = new FileInfo(openFileDialog1.FileName);
-                    Project =  JsonConvert.DeserializeObject<Project>(File.ReadAllText(openFileDialog1.FileName));
-                    ProjectDir = fileInfo.Directory.FullName;
-
-                    frmProjeto frmProjeto = new frmProjeto();
-                    frmProjeto.ShowDialog(this);
+                    this.OpenProject(openFileDialog1.FileName);
+                    this.UpdateRecentes();
                 }
             }
             catch (Exception ex)
@@ -110,6 +114,30 @@ namespace PinalMVC
             }
             this.Visible = true;
             this.Activate();
+        }
+
+        private void listRecentes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if(listRecentes.SelectedIndex > -1)
+                {
+                    this.Visible = false;
+
+                    this.OpenIndex(listRecentes.SelectedIndex);
+                    this.UpdateRecentes();
+
+                    this.Visible = true;
+                    this.Activate();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+
+                this.Visible = true;
+                this.Activate();
+            }
         }
 
         public static void AtualizaConfig(string dirproject)
@@ -233,6 +261,97 @@ if (pmvcGetValueFunction() == ""Index""){
 ?>";
                     writer.WriteLine(controller);
                     writer.Close();
+                }
+            }
+        }
+
+        public static string RemoveAcentos(string _textoNAOFormatado)
+        {
+            StringBuilder sbReturn = new StringBuilder();
+            var arrayText = _textoNAOFormatado.Normalize(NormalizationForm.FormD).ToCharArray();
+            foreach (char letter in arrayText)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                    sbReturn.Append(letter);
+            }
+            return sbReturn.ToString();
+        }
+
+        public static void SetRecente(string caminho, string name)
+        {
+            string salvar = "";
+            var list = ReadRecentes();
+
+            foreach (var item in list)
+            {
+                if(item.Contains(name))
+                {
+                    list.Remove(item);
+                    break;
+                }
+            }
+
+            list.Add(caminho + "|" + name + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+
+            foreach (var item in list)
+            {
+                salvar += item + "?";
+            }
+
+            if(salvar.Length > 0)
+            {
+                salvar = salvar.Substring(0, salvar.Length - 1);
+            }
+
+            PinalMVC.Properties.Settings.Default.Recentes = salvar;
+            PinalMVC.Properties.Settings.Default.Save();
+        }
+
+        public static List<string> ReadRecentes()
+        {
+            return PinalMVC.Properties.Settings.Default.Recentes.Split('?').ToList();
+        }
+
+        public void OpenProject(string caminho)
+        {
+            FileInfo fileInfo = new FileInfo(caminho);
+            Project = JsonConvert.DeserializeObject<Project>(File.ReadAllText(fileInfo.FullName));
+            ProjectDir = fileInfo.Directory.FullName;
+
+            frmProjeto frmProjeto = new frmProjeto();
+            frmProjeto.ShowDialog(this);
+        }
+
+        public void UpdateRecentes()
+        {
+            listRecentes.Items.Clear();
+
+            ListaRecentes = ReadRecentes().Reverse<string>().ToList();
+
+            foreach (var item in ListaRecentes)
+            {
+                if (!item.Equals(""))
+                {
+                    var it = item.Split('|').ToList();
+                    listRecentes.Items.Add(it[1] + " - " + it[2]);
+                }
+            }
+        }
+
+        public void OpenIndex(int index)
+        {
+            int i = 0;
+            foreach (var item in ListaRecentes)
+            {
+                if (!item.Equals(""))
+                {
+                    if (i == index)
+                    {
+                        var it = item.Split('|').ToList();
+                        this.OpenProject(it[0] + "\\" + it[1] + Ext);
+                        break;
+                    }
+                    i++;
                 }
             }
         }

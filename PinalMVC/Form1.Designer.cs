@@ -29,9 +29,12 @@ namespace PinalMVC
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnNovo = new System.Windows.Forms.Button();
             this.btnCarregar = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.label1 = new System.Windows.Forms.Label();
+            this.listRecentes = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // btnNovo
@@ -58,18 +61,40 @@ namespace PinalMVC
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 59);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Recentes";
+            // 
+            // listRecentes
+            // 
+            this.listRecentes.FormattingEnabled = true;
+            this.listRecentes.Location = new System.Drawing.Point(12, 75);
+            this.listRecentes.Name = "listRecentes";
+            this.listRecentes.Size = new System.Drawing.Size(265, 160);
+            this.listRecentes.TabIndex = 3;
+            this.listRecentes.SelectedIndexChanged += new System.EventHandler(this.listRecentes_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(289, 51);
+            this.ClientSize = new System.Drawing.Size(289, 244);
+            this.Controls.Add(this.listRecentes);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCarregar);
             this.Controls.Add(this.btnNovo);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -78,6 +103,8 @@ namespace PinalMVC
         private System.Windows.Forms.Button btnNovo;
         private System.Windows.Forms.Button btnCarregar;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox listRecentes;
     }
 }
 
