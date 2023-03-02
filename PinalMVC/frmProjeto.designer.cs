@@ -36,11 +36,20 @@
             this.btnNovoArquivo = new System.Windows.Forms.Button();
             this.treeProjeto = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnAtualizar
             // 
-            this.btnAtualizar.Location = new System.Drawing.Point(12, 12);
+            this.btnAtualizar.Location = new System.Drawing.Point(3, 3);
             this.btnAtualizar.Name = "btnAtualizar";
             this.btnAtualizar.Size = new System.Drawing.Size(114, 23);
             this.btnAtualizar.TabIndex = 0;
@@ -56,7 +65,7 @@
             // lblMsg
             // 
             this.lblMsg.AutoSize = true;
-            this.lblMsg.Location = new System.Drawing.Point(12, 38);
+            this.lblMsg.Location = new System.Drawing.Point(3, 29);
             this.lblMsg.Name = "lblMsg";
             this.lblMsg.Size = new System.Drawing.Size(10, 13);
             this.lblMsg.TabIndex = 7;
@@ -64,7 +73,7 @@
             // 
             // btnNovoArquivo
             // 
-            this.btnNovoArquivo.Location = new System.Drawing.Point(132, 12);
+            this.btnNovoArquivo.Location = new System.Drawing.Point(123, 3);
             this.btnNovoArquivo.Name = "btnNovoArquivo";
             this.btnNovoArquivo.Size = new System.Drawing.Size(114, 23);
             this.btnNovoArquivo.TabIndex = 8;
@@ -74,12 +83,13 @@
             // 
             // treeProjeto
             // 
+            this.treeProjeto.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeProjeto.ImageIndex = 0;
             this.treeProjeto.ImageList = this.imageList1;
-            this.treeProjeto.Location = new System.Drawing.Point(12, 41);
+            this.treeProjeto.Location = new System.Drawing.Point(0, 0);
             this.treeProjeto.Name = "treeProjeto";
             this.treeProjeto.SelectedImageIndex = 0;
-            this.treeProjeto.Size = new System.Drawing.Size(234, 308);
+            this.treeProjeto.Size = new System.Drawing.Size(246, 314);
             this.treeProjeto.TabIndex = 9;
             this.treeProjeto.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeProjeto_NodeMouseDoubleClick);
             // 
@@ -101,23 +111,73 @@
             this.imageList1.Images.SetKeyName(11, "icons8-javascript-20.png");
             this.imageList1.Images.SetKeyName(12, "icons8-suporte-em-informatica-20.png");
             // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(693, 361);
+            this.panel1.TabIndex = 10;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.panel4);
+            this.panel2.Controls.Add(this.panel3);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(246, 361);
+            this.panel2.TabIndex = 11;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.btnAtualizar);
+            this.panel3.Controls.Add(this.btnNovoArquivo);
+            this.panel3.Controls.Add(this.lblMsg);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(246, 47);
+            this.panel3.TabIndex = 12;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.treeProjeto);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(0, 47);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(246, 314);
+            this.panel4.TabIndex = 12;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.panel1);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(246, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(693, 361);
+            this.panel5.TabIndex = 12;
+            // 
             // frmProjeto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(258, 361);
-            this.Controls.Add(this.treeProjeto);
-            this.Controls.Add(this.btnNovoArquivo);
-            this.Controls.Add(this.lblMsg);
-            this.Controls.Add(this.btnAtualizar);
+            this.ClientSize = new System.Drawing.Size(939, 361);
+            this.Controls.Add(this.panel5);
+            this.Controls.Add(this.panel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmProjeto";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmProjeto";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Activated += new System.EventHandler(this.frmProjeto_Activated);
             this.Load += new System.EventHandler(this.frmProjeto_Load);
+            this.panel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -129,5 +189,10 @@
         private System.Windows.Forms.Button btnNovoArquivo;
         private System.Windows.Forms.TreeView treeProjeto;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel5;
     }
 }

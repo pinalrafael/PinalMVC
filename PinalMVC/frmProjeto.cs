@@ -14,11 +14,14 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 using PinalMVC.Enums;
+using System.Runtime.InteropServices;
 
 namespace PinalMVC
 {
     public partial class frmProjeto : Form
     {
+        private Process process { get; set; }
+
         public frmProjeto()
         {
             InitializeComponent();
@@ -83,7 +86,18 @@ namespace PinalMVC
                 if (treeProjeto.SelectedNode != null)
                 {
                     object[] tag = (object[])treeProjeto.SelectedNode.Tag;
-                    Process.Start((string)tag[0]);
+
+                    try
+                    {
+                        if (process != null)
+                        {
+                            process.Kill();
+                        }
+                    }
+                    catch { }
+                    process = Process.Start(Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory.ToString()) + @"\notepad\notepad++.exe", (string)tag[0]);
+                    process.WaitForInputIdle(); // Tempo de espera para que a janela do aplicativo "apareça"
+                    SetParent(process.MainWindowHandle, panel1.Handle); // Aqui está a jogada, colocando o panel "pai"
                 }
             }
             catch (Exception ex)
@@ -320,5 +334,8 @@ namespace PinalMVC
                 this.AddNode(node.Nodes, treeNode);
             }
         }
+
+        [DllImport("user32.dll")]
+        static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
     }
 }
