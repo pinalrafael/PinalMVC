@@ -1,5 +1,5 @@
 # PinalMVC [PT_BR]
-- Software C# desktop para criação do projeto, atualização da biblioteca e criação dos arquivos nos padões da biblioteca.
+- Software C# desktop para criação do projeto, atualização da biblioteca, criação dos arquivos nos padões da biblioteca e edição dos arquivos do projeto.
 - Biblioteca simples para padronização de projetos em PHP no formato MVC.
 
 -----
@@ -13,7 +13,8 @@
 
 ## INSTRUÇÕES DE FORMA AUTOMÁTICA
 1. Faça download e instale o software desktop PinalMVC.
-2. Para criar um projeto clique em Novo Projeto.
+2. Ao abrir o software pela primeira vez será baixado o notepad++, caso o download não ocorra adicione a pasta [notepad] na pasta de instalação. 
+3. Para criar um projeto clique em Novo Projeto.
 	- Caminho (obrigatório): selecione o caminho onde será criado o projeto.
 	- Nome (obrigatório): insira um nome para o projeto.
 	- Sufixo Model (opcional): sufixo para os arquivos do Model. Ficará após o nome do arquivo e antes do .php.
@@ -21,13 +22,14 @@
 	- Sufixo Controller (opcional): sufixo para os arquivos do Controller. Ficará após o nome do arquivo e antes do .php.
 	- Sufixo Page Error (opcional): sufixo para os arquivos das páginas de erro. Ficará após o nome do arquivo e antes do .php.
 	- Clique em Criar para criar um projeto com as conficurações iniciais.
-3. Para abrir um projeto já criado clique em Carregar Projeto e selecione o arquivo do projeto desejado.
-4. Com o projeto aberto, para atualizar a biblioteca PinalMVC clique em Atualizar Biblioteca.
-5. Com o projeto aberto, para atualizar adicionar arquivos padrões de forma rápida, clique em Novo Arquivo.
+4. Para abrir um projeto já criado clique em Carregar Projeto e selecione o arquivo do projeto desejado.
+5. Com o projeto aberto, para atualizar a biblioteca PinalMVC clique em Atualizar Biblioteca.
+6. Com o projeto aberto, para atualizar adicionar arquivos padrões de forma rápida, clique em Novo Arquivo.
 	- Nome (obrigatório): insira um nome para a rota e arquivos.
 	- Criar (opcional): selecione os arquivos que deseja criar entre Model, View e Controller.
 	- Controller (opcional): selecione as configurações padões do seu controller entre CRUD e POST/GET.
 	- Página (opcional): selecione se deseja criar como página de erro.
+7. Use o click duplo sobre algum arquivo da árvore para abrir o arquivo e editar.
 
 ## INSTRUÇÕES DE FORMA MANUAL
 Os arquivos de [Sample] comtem um exemplo completo de uso da biblioteca e suas funções.

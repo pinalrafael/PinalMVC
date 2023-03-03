@@ -34,6 +34,8 @@ namespace PinalMVC
                 this.Text = Form1.Project.nameproject;
                 Form1.SetRecente(Form1.ProjectDir, Form1.Project.nameproject);
 
+                this.OpenNotepad("");
+
                 this.Activate();
             }
             catch (Exception ex)
@@ -50,7 +52,10 @@ namespace PinalMVC
 
                 string dirincludes = Form1.ProjectDir + "/" + Form1.Project.includes;
                 lblMsg.Text = "Criando: " + dirincludes;
-                Directory.Delete(dirincludes, true);
+                if (Directory.Exists(dirincludes))
+                {
+                    Directory.Delete(dirincludes, true);
+                }
                 if (!Directory.Exists(dirincludes))
                 {
                     Directory.CreateDirectory(dirincludes);
@@ -72,6 +77,13 @@ namespace PinalMVC
             {
                 frmNovoArquivo frmNovoArquivo = new frmNovoArquivo();
                 frmNovoArquivo.ShowDialog(this);
+
+                string files = "";
+                foreach (var item in frmNovoArquivo.Arquivos)
+                {
+                    files += item + " ";
+                }
+                this.OpenNotepad(files);
             }
             catch (Exception ex)
             {
@@ -87,17 +99,7 @@ namespace PinalMVC
                 {
                     object[] tag = (object[])treeProjeto.SelectedNode.Tag;
 
-                    try
-                    {
-                        if (process != null)
-                        {
-                            process.Kill();
-                        }
-                    }
-                    catch { }
-                    process = Process.Start(Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory.ToString()) + @"\notepad\notepad++.exe", (string)tag[0]);
-                    process.WaitForInputIdle(); // Tempo de espera para que a janela do aplicativo "apareça"
-                    SetParent(process.MainWindowHandle, panel1.Handle); // Aqui está a jogada, colocando o panel "pai"
+                    this.OpenNotepad((string)tag[0]);
                 }
             }
             catch (Exception ex)
@@ -124,6 +126,11 @@ namespace PinalMVC
             object[] ret = new object[] { false, arg[0], arg[1] };
             try
             {
+                if (File.Exists(arg[1] + "\\" + Form1.Nome + ".zip"))
+                {
+                    File.Delete(arg[1] + "\\" + Form1.Nome + ".zip");
+                }
+
                 if (Util.BaixarBiblioteca((string)arg[1], Form1.Nome))
                 {
                     ret[0] = true;
@@ -333,6 +340,37 @@ namespace PinalMVC
 
                 this.AddNode(node.Nodes, treeNode);
             }
+        }
+
+        private void OpenNotepad(string files)
+        {
+            try
+            {
+                if (process != null)
+                {
+                    process.Kill();
+                }
+            }
+            catch { }
+
+            /*
+             * Argumentos notepad++
+             * https://npp-user-manual.org/docs/command-prompt/
+             */
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+            startInfo.FileName = Form1.ExeDir + @"\notepad\notepad++.exe";
+            startInfo.Arguments = "-alwaysOnTop -x0 -y0 -nosession " + files;
+
+            process = System.Diagnostics.Process.Start(startInfo);
+            process.WaitForInputIdle();
+            // Coloca o notepad++ no panel
+            SetParent(process.MainWindowHandle, panel1.Handle);
+
+            /*
+             * Atalhos
+             * https://learn.microsoft.com/pt-br/office/vba/language/reference/user-interface-help/sendkeys-statement
+             */
+            SendKeys.Send("%( X)");
         }
 
         [DllImport("user32.dll")]

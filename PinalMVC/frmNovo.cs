@@ -129,6 +129,11 @@ namespace PinalMVC
             object[] ret = new object[] { false, arg[0], arg[1] };
             try
             {
+                if (File.Exists(arg[1] + "\\" + Form1.Nome + ".zip"))
+                {
+                    File.Delete(arg[1] + "\\" + Form1.Nome + ".zip");
+                }
+
                 if (Util.BaixarBiblioteca((string)arg[1], Form1.Nome))
                 {
                     ret[0] = true;

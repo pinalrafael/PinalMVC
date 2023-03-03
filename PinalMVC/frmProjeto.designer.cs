@@ -38,12 +38,12 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -113,6 +113,7 @@
             // 
             // panel1
             // 
+            this.panel1.AutoScroll = true;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -129,6 +130,15 @@
             this.panel2.Size = new System.Drawing.Size(246, 361);
             this.panel2.TabIndex = 11;
             // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.treeProjeto);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(0, 47);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(246, 314);
+            this.panel4.TabIndex = 12;
+            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.btnAtualizar);
@@ -139,15 +149,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(246, 47);
             this.panel3.TabIndex = 12;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.treeProjeto);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(0, 47);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(246, 314);
-            this.panel4.TabIndex = 12;
             // 
             // panel5
             // 
@@ -173,9 +174,9 @@
             this.Activated += new System.EventHandler(this.frmProjeto_Activated);
             this.Load += new System.EventHandler(this.frmProjeto_Load);
             this.panel2.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.panel4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
 

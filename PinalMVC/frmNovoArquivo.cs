@@ -13,6 +13,8 @@ namespace PinalMVC
 {
     public partial class frmNovoArquivo : Form
     {
+        public List<string> Arquivos { get; set; }
+
         public frmNovoArquivo()
         {
             InitializeComponent();
@@ -22,6 +24,8 @@ namespace PinalMVC
         {
             try
             {
+                this.Arquivos = new List<string>();
+
                 txtNome.Text = "NovoArquivo";
                 chbModel.Checked = true;
                 chbView.Checked = true;
@@ -47,7 +51,7 @@ namespace PinalMVC
                     return;
                 }
 
-                Form1.CriarArquivo(Form1.RemoveAcentos(txtNome.Text.Trim()), chbModel.Checked, chbView.Checked, chbController.Checked, chbCRUD.Checked, chbPOSTGET.Checked, chbErrorPage.Checked);
+                this.Arquivos = Form1.CriarArquivo(Form1.RemoveAcentos(txtNome.Text.Trim()), chbModel.Checked, chbView.Checked, chbController.Checked, chbCRUD.Checked, chbPOSTGET.Checked, chbErrorPage.Checked);
 
                 this.Close();
             }

@@ -35,6 +35,8 @@ namespace PinalMVC
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label1 = new System.Windows.Forms.Label();
             this.listRecentes = new System.Windows.Forms.ListBox();
+            this.lblMsg = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // btnNovo
@@ -79,11 +81,26 @@ namespace PinalMVC
             this.listRecentes.TabIndex = 3;
             this.listRecentes.SelectedIndexChanged += new System.EventHandler(this.listRecentes_SelectedIndexChanged);
             // 
+            // lblMsg
+            // 
+            this.lblMsg.AutoSize = true;
+            this.lblMsg.Location = new System.Drawing.Point(12, 38);
+            this.lblMsg.Name = "lblMsg";
+            this.lblMsg.Size = new System.Drawing.Size(10, 13);
+            this.lblMsg.TabIndex = 8;
+            this.lblMsg.Text = " ";
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(289, 244);
+            this.Controls.Add(this.lblMsg);
             this.Controls.Add(this.listRecentes);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCarregar);
@@ -105,6 +122,8 @@ namespace PinalMVC
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox listRecentes;
+        private System.Windows.Forms.Label lblMsg;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

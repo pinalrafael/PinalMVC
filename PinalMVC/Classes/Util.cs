@@ -16,7 +16,7 @@ namespace PinalMVC.Classes
 
                 using (var client = new WebClient())
                 {
-                    client.DownloadFile("http://dwcpsystems.tecnologia.ws/PinalMVC.zip", DownloadDir + "\\" + Nome + ".zip");
+                    client.DownloadFile("http://dwcpsystems.tecnologia.ws/" + Nome + ".zip", DownloadDir + "\\" + Nome + ".zip");
                 }
                 return true;
             }

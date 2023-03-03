@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,8 +26,9 @@ namespace PinalMVC
         public static string ExtNome = "Arquivo PinalMVC (*.pmvc)";
         public static string PatchDoc { get; set; }
         public static string SourcesDir { get; set; }
-        public static Project Project { get; set; }
         public static string ProjectDir { get; set; }
+        public static string ExeDir { get; set; }
+        public static Project Project { get; set; }
         public static List<string> ListaRecentes { get; set; }
 
         public Form1()
@@ -44,6 +46,7 @@ namespace PinalMVC
                 ListaRecentes = new List<string>();
 
                 PatchDoc = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + Nome;
+                ExeDir = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory.ToString());
 
                 SourcesDir = PatchDoc + "\\Sources\\";
                 if (!Directory.Exists(SourcesDir))
@@ -52,6 +55,13 @@ namespace PinalMVC
                 }
 
                 this.UpdateRecentes();
+
+                if (!Directory.Exists(ExeDir + "\\notepad\\"))
+                {
+                    lblMsg.Text = "Baixando Notepad++";
+                    this.Enabled = false;
+                    backgroundWorker1.RunWorkerAsync(ExeDir);
+                }
             }
             catch (Exception ex) 
             {
@@ -141,6 +151,63 @@ namespace PinalMVC
             }
         }
 
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string arg = (string)e.Argument;
+            object[] ret = new object[] { false, arg };
+            try
+            {
+                if (File.Exists(arg + "\\notepad.zip"))
+                {
+                    File.Delete(arg + "\\notepad.zip");
+                }
+
+                if (Util.BaixarBiblioteca(arg, "notepad"))
+                {
+                    ret[0] = true;
+                }
+                else
+                {
+                    ret[0] = false;
+                }
+            }
+            catch { }
+            e.Result = ret;
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                object[] ret = (object[])e.Result;
+
+                if ((bool)ret[0])
+                {
+                    using (ZipArchive zip = ZipFile.Open(ret[1] + "\\notepad.zip", ZipArchiveMode.Read))
+                    {
+                        zip.ExtractToDirectory((string)ret[1]);
+                    }
+                    if (File.Exists(ret[1] + "\\notepad.zip"))
+                    {
+                        File.Delete(ret[1] + "\\notepad.zip");
+                    }
+                }
+                else
+                {
+                    this.Enabled = true;
+                    MessageBox.Show("Não foi possível baixar o notepad: adicione manualmente a pasta 'notepad' do projeto para a pasta do exe!!");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            lblMsg.Text = "Download Concluído";
+            this.Enabled = true;
+        }
+
         public static void AtualizaConfig(string dirproject)
         {
             using (StreamWriter writer = new StreamWriter(dirproject + "/" + Form1.Project.includes + "config.json", false))
@@ -151,12 +218,16 @@ namespace PinalMVC
             }
         }
 
-        public static void CriarArquivo(string pnome, bool pmodel, bool pview, bool pcontroller, bool pcrud, bool ppostget, bool perropage)
+        public static List<string> CriarArquivo(string pnome, bool pmodel, bool pview, bool pcontroller, bool pcrud, bool ppostget, bool perropage)
         {
+            List<string> retorno = new List<string>();
+            string caminho = "";
+
             string nome = pnome;
             if (pmodel)
             {
-                using (StreamWriter writer = new StreamWriter(Form1.ProjectDir + "\\" + Form1.Project.models + nome + Form1.Project.models_suffix + ".php", false))
+                caminho = Form1.ProjectDir + "\\" + Form1.Project.models + nome + Form1.Project.models_suffix + ".php";
+                using (StreamWriter writer = new StreamWriter(caminho, false))
                 {
                     string model = @"<?php
 class " + nome + @"{
@@ -168,6 +239,7 @@ class " + nome + @"{
                     writer.WriteLine(model);
                     writer.Close();
                 }
+                retorno.Add(caminho);
             }
 
             if (pview)
@@ -184,44 +256,53 @@ class " + nome + @"{
                     pagename = Form1.Project.page_errors + nome + Form1.Project.page_errors_suffix;
                 }
 
-                using (StreamWriter writer = new StreamWriter(Form1.ProjectDir + "\\" + pagename + ".php", false))
+                caminho = Form1.ProjectDir + "\\" + pagename + ".php";
+                using (StreamWriter writer = new StreamWriter(caminho, false))
                 {
                     string view = @"<h1>" + nome + @" Index</h1>";
                     writer.WriteLine(view);
                     writer.Close();
                 }
+                retorno.Add(caminho);
 
                 if (pcrud && !perropage)
                 {
                     string pagenamecrud = namefolder + "\\Create" + Form1.Project.views_suffix;
-                    using (StreamWriter writer = new StreamWriter(Form1.ProjectDir + "\\" + pagenamecrud + ".php", false))
+                    caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
+                    using (StreamWriter writer = new StreamWriter(caminho, false))
                     {
                         string view = @"<h1>" + nome + @" Create</h1>";
                         writer.WriteLine(view);
                         writer.Close();
                     }
+                    retorno.Add(caminho);
 
                     pagenamecrud = namefolder + "\\Update" + Form1.Project.views_suffix;
-                    using (StreamWriter writer = new StreamWriter(Form1.ProjectDir + "\\" + pagenamecrud + ".php", false))
+                    caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
+                    using (StreamWriter writer = new StreamWriter(caminho, false))
                     {
                         string view = @"<h1>" + nome + @" Update</h1>";
                         writer.WriteLine(view);
                         writer.Close();
                     }
+                    retorno.Add(caminho);
 
                     pagenamecrud = namefolder + "\\Delete" + Form1.Project.views_suffix;
-                    using (StreamWriter writer = new StreamWriter(Form1.ProjectDir + "\\" + pagenamecrud + ".php", false))
+                    caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
+                    using (StreamWriter writer = new StreamWriter(caminho, false))
                     {
                         string view = @"<h1>" + nome + @" Delete</h1>";
                         writer.WriteLine(view);
                         writer.Close();
                     }
+                    retorno.Add(caminho);
                 }
             }
 
             if (pcontroller)
             {
-                using (StreamWriter writer = new StreamWriter(Form1.ProjectDir + "\\" + Form1.Project.controllers + nome + Form1.Project.controllers_suffix + ".php", false))
+                caminho = Form1.ProjectDir + "\\" + Form1.Project.controllers + nome + Form1.Project.controllers_suffix + ".php";
+                using (StreamWriter writer = new StreamWriter(caminho, false))
                 {
                     string postget = "";
                     string crud = "";
@@ -263,7 +344,10 @@ if (pmvcGetValueFunction() == ""Index""){
                     writer.WriteLine(controller);
                     writer.Close();
                 }
+                retorno.Add(caminho);
             }
+
+            return retorno;
         }
 
         public static string RemoveAcentos(string _textoNAOFormatado)
@@ -294,9 +378,13 @@ if (pmvcGetValueFunction() == ""Index""){
 
             list.Add(caminho + "|" + name + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
 
+            int cont = 0;
             foreach (var item in list)
             {
-                salvar += item + "?";
+                if (cont < 10)
+                {
+                    salvar += item + "?";
+                }
             }
 
             if(salvar.Length > 0)
