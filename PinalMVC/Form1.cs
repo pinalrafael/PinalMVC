@@ -20,7 +20,7 @@ namespace PinalMVC
 {
     public partial class Form1 : Form
     {
-        private string Versao = "1.0.0-dev";
+        private string Versao = "1.0.0";
         public static string Nome = "PinalMVC";
         public static string Ext = ".pmvc";
         public static string ExtNome = "Arquivo PinalMVC (*.pmvc)";
