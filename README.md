@@ -4,7 +4,7 @@
 
 -----
 - [**Exemplo**](http://rafaelpinal.siteprofissional.com/PinalMVC/).
-- [**Reposiório**](https://github.com/pinalrafael/PinalMVC).
+- [**Repositório**](https://github.com/pinalrafael/PinalMVC).
 - [**Releases**](https://github.com/pinalrafael/PinalMVC/releases).
 
 -----
