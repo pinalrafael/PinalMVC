@@ -91,6 +91,48 @@ namespace PinalMVC
             }
         }
 
+        private void btnExecutar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bool apacheaberto = false;
+                foreach (var item in Process.GetProcesses())
+                {
+                    if (item.ProcessName == "httpd")
+                    {
+                        apacheaberto = true;
+                        break;
+                    }
+                }
+
+                if (!apacheaberto)
+                {
+                    string httpd_modelo = Form1.ExeDir.Replace("\\", "/") + "/apache/conf/httpd_modelo.conf";
+                    string httpd = Form1.ExeDir.Replace("\\", "/") + "/apache/conf/httpd.conf";
+                    string httpdexe = Form1.ExeDir.Replace("\\", "/") + "/apache/bin/httpd.exe";
+
+                    string config = File.ReadAllText(httpd_modelo);
+
+                    config = config.Replace("{port}", "8098");
+                    config = config.Replace("{src_project}", Form1.ProjectDir.Replace("\\", "/"));
+
+                    using (StreamWriter writer = new StreamWriter(httpd, false))
+                    {
+                        writer.WriteLine(config);
+                        writer.Close();
+                    }
+
+                    Process.Start(httpdexe);
+                }
+
+                Process.Start("http://localhost:8098");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
         private void treeProjeto_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             try

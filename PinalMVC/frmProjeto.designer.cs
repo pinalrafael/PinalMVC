@@ -41,6 +41,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.btnExecutar = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -65,7 +66,7 @@
             // lblMsg
             // 
             this.lblMsg.AutoSize = true;
-            this.lblMsg.Location = new System.Drawing.Point(3, 29);
+            this.lblMsg.Location = new System.Drawing.Point(3, 61);
             this.lblMsg.Name = "lblMsg";
             this.lblMsg.Size = new System.Drawing.Size(10, 13);
             this.lblMsg.TabIndex = 7;
@@ -89,7 +90,7 @@
             this.treeProjeto.Location = new System.Drawing.Point(0, 0);
             this.treeProjeto.Name = "treeProjeto";
             this.treeProjeto.SelectedImageIndex = 0;
-            this.treeProjeto.Size = new System.Drawing.Size(246, 314);
+            this.treeProjeto.Size = new System.Drawing.Size(246, 277);
             this.treeProjeto.TabIndex = 9;
             this.treeProjeto.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeProjeto_NodeMouseDoubleClick);
             // 
@@ -134,20 +135,21 @@
             // 
             this.panel4.Controls.Add(this.treeProjeto);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(0, 47);
+            this.panel4.Location = new System.Drawing.Point(0, 84);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(246, 314);
+            this.panel4.Size = new System.Drawing.Size(246, 277);
             this.panel4.TabIndex = 12;
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btnExecutar);
             this.panel3.Controls.Add(this.btnAtualizar);
             this.panel3.Controls.Add(this.btnNovoArquivo);
             this.panel3.Controls.Add(this.lblMsg);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(246, 47);
+            this.panel3.Size = new System.Drawing.Size(246, 84);
             this.panel3.TabIndex = 12;
             // 
             // panel5
@@ -158,6 +160,16 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(693, 361);
             this.panel5.TabIndex = 12;
+            // 
+            // btnExecutar
+            // 
+            this.btnExecutar.Location = new System.Drawing.Point(3, 32);
+            this.btnExecutar.Name = "btnExecutar";
+            this.btnExecutar.Size = new System.Drawing.Size(114, 23);
+            this.btnExecutar.TabIndex = 9;
+            this.btnExecutar.Text = "Executar Projeto";
+            this.btnExecutar.UseVisualStyleBackColor = true;
+            this.btnExecutar.Click += new System.EventHandler(this.btnExecutar_Click);
             // 
             // frmProjeto
             // 
@@ -195,5 +207,6 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button btnExecutar;
     }
 }

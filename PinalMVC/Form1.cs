@@ -20,7 +20,7 @@ namespace PinalMVC
 {
     public partial class Form1 : Form
     {
-        private string Versao = "1.0.0";
+        private string Versao = "1.1.0";
         public static string Nome = "PinalMVC";
         public static string Ext = ".pmvc";
         public static string ExtNome = "Arquivo PinalMVC (*.pmvc)";
@@ -60,7 +60,16 @@ namespace PinalMVC
                 {
                     lblMsg.Text = "Baixando Notepad++";
                     this.Enabled = false;
-                    backgroundWorker1.RunWorkerAsync(ExeDir);
+                    backgroundWorker1.RunWorkerAsync(new object[] { "notepad", ExeDir });
+                }
+                else
+                {
+                    if (!Directory.Exists(ExeDir + "\\apache\\"))
+                    {
+                        lblMsg.Text = "Baixando apache";
+                        this.Enabled = false;
+                        backgroundWorker1.RunWorkerAsync(new object[] { "apache", ExeDir });
+                    }
                 }
             }
             catch (Exception ex) 
@@ -153,16 +162,16 @@ namespace PinalMVC
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            string arg = (string)e.Argument;
-            object[] ret = new object[] { false, arg };
+            object[] arg = (object[])e.Argument;
+            object[] ret = new object[] { false, arg[0].ToString(), arg[1].ToString() };
             try
             {
-                if (File.Exists(arg + "\\notepad.zip"))
+                if (File.Exists(arg + "\\" + arg[0].ToString() + ".zip"))
                 {
-                    File.Delete(arg + "\\notepad.zip");
+                    File.Delete(arg + "\\" + arg[0].ToString() + ".zip");
                 }
 
-                if (Util.BaixarBiblioteca(arg, "notepad"))
+                if (Util.BaixarBiblioteca(arg[1].ToString(), arg[0].ToString()))
                 {
                     ret[0] = true;
                 }
@@ -183,19 +192,19 @@ namespace PinalMVC
 
                 if ((bool)ret[0])
                 {
-                    using (ZipArchive zip = ZipFile.Open(ret[1] + "\\notepad.zip", ZipArchiveMode.Read))
+                    using (ZipArchive zip = ZipFile.Open(ret[2] + "\\" + ret[1].ToString() + ".zip", ZipArchiveMode.Read))
                     {
-                        zip.ExtractToDirectory((string)ret[1]);
+                        zip.ExtractToDirectory((string)ret[2]);
                     }
-                    if (File.Exists(ret[1] + "\\notepad.zip"))
+                    if (File.Exists(ret[2] + "\\" + ret[1].ToString() + ".zip"))
                     {
-                        File.Delete(ret[1] + "\\notepad.zip");
+                        File.Delete(ret[2] + "\\" + ret[1].ToString() + ".zip");
                     }
                 }
                 else
                 {
                     this.Enabled = true;
-                    MessageBox.Show("Não foi possível baixar o notepad: adicione manualmente a pasta 'notepad' do projeto para a pasta do exe!!");
+                    MessageBox.Show("Não foi possível baixar o " + ret[1].ToString() + ": adicione manualmente a pasta '" + ret[1].ToString() + "' do projeto para a pasta do exe!!");
                     return;
                 }
             }
@@ -206,6 +215,13 @@ namespace PinalMVC
 
             lblMsg.Text = "Download Concluído";
             this.Enabled = true;
+
+            if (!Directory.Exists(ExeDir + "\\apache\\"))
+            {
+                lblMsg.Text = "Baixando apache";
+                this.Enabled = false;
+                backgroundWorker1.RunWorkerAsync(new object[] { "apache", ExeDir });
+            }
         }
 
         public static void AtualizaConfig(string dirproject)
@@ -259,7 +275,17 @@ class " + nome + @"{
                 caminho = Form1.ProjectDir + "\\" + pagename + ".php";
                 using (StreamWriter writer = new StreamWriter(caminho, false))
                 {
-                    string view = @"<h1>" + nome + @" Index</h1>";
+                    string indexcrud = "";
+
+                    if (pcrud && !perropage)
+                    {
+                        indexcrud = @"<br><a href='<?php echo $pmvc_root; ?>" + nome + @"/Create'>Cadastro</a><br>
+<a href='<?php echo $pmvc_root; ?>" + nome + @"/Update/1'>Update 1</a><br>
+<a href='<?php echo $pmvc_root; ?>" + nome + @"/Delete/1'>Delete 1</a><br>";
+                    }
+
+                    string view = @"<h1>" + nome + @" Index</h1>
+" + indexcrud;
                     writer.WriteLine(view);
                     writer.Close();
                 }
@@ -267,6 +293,8 @@ class " + nome + @"{
 
                 if (pcrud && !perropage)
                 {
+                    string idcrud = "<br><?php echo $id; ?>";
+
                     string pagenamecrud = namefolder + "\\Create" + Form1.Project.views_suffix;
                     caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
                     using (StreamWriter writer = new StreamWriter(caminho, false))
@@ -281,7 +309,8 @@ class " + nome + @"{
                     caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
                     using (StreamWriter writer = new StreamWriter(caminho, false))
                     {
-                        string view = @"<h1>" + nome + @" Update</h1>";
+                        string view = @"<h1>" + nome + @" Update</h1>
+" + idcrud;
                         writer.WriteLine(view);
                         writer.Close();
                     }
@@ -291,7 +320,8 @@ class " + nome + @"{
                     caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
                     using (StreamWriter writer = new StreamWriter(caminho, false))
                     {
-                        string view = @"<h1>" + nome + @" Delete</h1>";
+                        string view = @"<h1>" + nome + @" Delete</h1>
+" + idcrud;
                         writer.WriteLine(view);
                         writer.Close();
                     }

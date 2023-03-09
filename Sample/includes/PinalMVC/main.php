@@ -2,7 +2,7 @@
 /*
  * CREATOR: RAFAEL PINAL
  * CREATED: 24/02/2023
- * UPDATED: 27/02/2023
+ * UPDATED: 09/03/2023
  */
 
 // Init System
@@ -13,13 +13,13 @@ $pmvc_config_json = file_get_contents($pmvc_dir."/config.json");
 $pmvc_config = json_decode($pmvc_config_json);
 
 // Load Vars
-$pmvc_version = "1.1.0";// Lib version
+$pmvc_version = "1.1.1";// Lib version
 $pmvc_root = $pmvc_config->root;// Folder root of index.php
 $pmvc_title = $pmvc_config->name; // Title of page.
 $pmvc_pars = array();// Array of URL paramters: URL?par0=p0&par1=p1&par2=p2&par3p3
 
 // Load system arguments
-$pmvc_args = pmvcGetSysArgs($_GET['request']);// Array of arguments: URL/arg0/arg1/arg2/arg3/
+$pmvc_args = pmvcGetSysArgs($_GET);// Array of arguments: URL/arg0/arg1/arg2/arg3/
 
 /* 
  * Set view custom for function
@@ -53,16 +53,27 @@ function pmvcSetRoot($root){
  */
 function pmvcGetSysArgs($request){
 	// Load MVC URL
-	$pmvc_request = explode("/", $request);
-	$pmvc_args["controller"] = $pmvc_request[0];
-	$pmvc_args["function"] = $pmvc_request[1];
-	$pmvc_args["id"] = $pmvc_request[2];
+	$pmvc_args = array( 'controller' => '', 'function' => '', 'id' => '' );
+	if(isset($request['request'])){
+		$pmvc_request = explode("/", $request['request']);
+		if(count($pmvc_request) >= 1){
+			$pmvc_args["controller"] = $pmvc_request[0];
+		}
+		if(count($pmvc_request) >= 2){
+			$pmvc_args["function"] = $pmvc_request[1];
+		}
+		if(count($pmvc_request) >= 3){
+			$pmvc_args["id"] = $pmvc_request[2];
+		}
 
-	// Load infinite URL
-	$pmvc_par = 0;
-	$pmvc_par_index = 3;
-	for($pmvc_par_index; $pmvc_par_index < count($pmvc_request); $pmvc_par_index++, $pmvc_par++){
-		$pmvc_args["arg".$pmvc_par] = $pmvc_request[$pmvc_par_index];
+		// Load infinite URL
+		if(count($pmvc_request) >= 4){
+			$pmvc_par = 0;
+			$pmvc_par_index = 3;
+			for($pmvc_par_index; $pmvc_par_index < count($pmvc_request); $pmvc_par_index++, $pmvc_par++){
+				$pmvc_args["arg".$pmvc_par] = $pmvc_request[$pmvc_par_index];
+			}
+		}
 	}
 
 	return $pmvc_args;
