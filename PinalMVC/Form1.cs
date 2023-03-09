@@ -186,10 +186,10 @@ namespace PinalMVC
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            object[] ret = (object[])e.Result;
+
             try
             {
-                object[] ret = (object[])e.Result;
-
                 if ((bool)ret[0])
                 {
                     using (ZipArchive zip = ZipFile.Open(ret[2] + "\\" + ret[1].ToString() + ".zip", ZipArchiveMode.Read))
@@ -216,11 +216,14 @@ namespace PinalMVC
             lblMsg.Text = "Download Concluído";
             this.Enabled = true;
 
-            if (!Directory.Exists(ExeDir + "\\apache\\"))
+            if (!ret[1].ToString().Equals("apache"))
             {
-                lblMsg.Text = "Baixando apache";
-                this.Enabled = false;
-                backgroundWorker1.RunWorkerAsync(new object[] { "apache", ExeDir });
+                if (!Directory.Exists(ExeDir + "\\apache\\"))
+                {
+                    lblMsg.Text = "Baixando apache";
+                    this.Enabled = false;
+                    backgroundWorker1.RunWorkerAsync(new object[] { "apache", ExeDir });
+                }
             }
         }
 
@@ -342,7 +345,7 @@ class " + nome + @"{
                         postget = @"if(isset($_GET)){
 		
 	} else if(isset($_POST)){
-	
+	    
 	}";
                     }
 
