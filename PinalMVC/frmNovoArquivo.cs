@@ -65,7 +65,11 @@ namespace PinalMVC
         {
             try
             {
-                if (!(char.IsDigit(e.KeyChar)) && !(char.IsLetter(e.KeyChar)))
+                if (e.KeyChar == '\b')
+                {
+                    e.Handled = false;
+                }
+                else if (!(char.IsDigit(e.KeyChar)) && !(char.IsLetter(e.KeyChar)))
                 {
                     e.Handled = true;
                 }

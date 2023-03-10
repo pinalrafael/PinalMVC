@@ -67,6 +67,11 @@ namespace PinalMVC
                     return;
                 }
 
+                if(!txtCaminho.Text.Substring(txtCaminho.Text.Length - 1).Equals(@"\"))
+                {
+                    txtCaminho.Text = txtCaminho.Text + @"\";
+                }
+
                 if (!Directory.Exists(txtCaminho.Text.Trim()))
                 {
                     Directory.CreateDirectory(txtCaminho.Text.Trim());
@@ -301,7 +306,11 @@ include('" + Form1.Project.includes + @"setup.php');
         {
             try
             {
-                if (!(char.IsDigit(e.KeyChar)) && !(char.IsLetter(e.KeyChar)))
+                if(e.KeyChar == '\b')
+                {
+                    e.Handled = false;
+                }
+                else if (!(char.IsDigit(e.KeyChar)) && !(char.IsLetter(e.KeyChar)))
                 {
                     e.Handled = true;
                 }
