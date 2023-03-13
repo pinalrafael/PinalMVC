@@ -344,7 +344,8 @@ class " + nome + @"{
                     {
                         postget = @"if(isset($_GET)){
 		
-	} else if(isset($_POST)){
+	}
+    if(isset($_POST)){
 	    
 	}";
                     }
@@ -352,12 +353,15 @@ class " + nome + @"{
                     if (pcrud && !perropage)
                     {
                         crud = @"else if(pmvcGetValueFunction() == ""Create""){
+    $pmvc_title = 'Create " + nome + @"';
 	" + postget + @"
 }else if(pmvcGetValueFunction() == ""Update""){
     $id = pmvcGetValueId();
+    $pmvc_title = 'Update " + nome + @" '.$id;
 	" + postget + @"
 }else if(pmvcGetValueFunction() == ""Delete""){
     $id = pmvcGetValueId();
+    $pmvc_title = 'Delete " + nome + @" '.$id;
 	" + postget + @"
 }";
                     }
