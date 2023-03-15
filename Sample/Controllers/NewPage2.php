@@ -1,8 +1,8 @@
 <?php
 
-$pmvc_layout = "Views/Layout/_Layout.php";
-$pmvc_title = "NewPage";
-$pmvc_Model = new NewPage();
+$pmvc_layout = "Views/Layout/_Layout2.php";
+$pmvc_title = "NewPage2";
+$pmvc_Model = new NewPage2();
 
 if(pmvcGetValueFunction() == "Index"){
 	if(isset($_GET)){

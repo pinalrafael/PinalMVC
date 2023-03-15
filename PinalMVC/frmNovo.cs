@@ -206,6 +206,13 @@ namespace PinalMVC
                     Directory.CreateDirectory(dirpageerrors);
                 }
 
+                string dirpagelayout = dirproject + "/" + Form1.Project.pages_layouts;
+                lblMsg.Text = "Criando: " + dirpagelayout;
+                if (!Directory.Exists(dirpagelayout))
+                {
+                    Directory.CreateDirectory(dirpagelayout);
+                }
+
                 // Criando arquivo .htaccess
                 lblMsg.Text = "Criando: .htaccess";
                 using (StreamWriter writer = new StreamWriter(dirproject + "/.htaccess", false))
@@ -233,7 +240,16 @@ include('" + Form1.Project.includes + @"customroutes.php');
 
 include('" + Form1.Project.includes + @"setup.php');
 
-?>
+?>";
+                    writer.WriteLine(index);
+                    writer.Close();
+                }
+
+                // Criando arquivo _Layout.php
+                lblMsg.Text = "Criando: _Layout.php";
+                using (StreamWriter writer = new StreamWriter(dirpagelayout + "/_Layout.php", false))
+                {
+                    string _Layout = @"
 <!DOCTYPE html>
 <html>
 	<head>
@@ -258,7 +274,7 @@ include('" + Form1.Project.includes + @"setup.php');
 	<?php pmvcBody(); ?>
 	</body>
 </html>";
-                    writer.WriteLine(index);
+                    writer.WriteLine(_Layout);
                     writer.Close();
                 }
 
@@ -288,7 +304,7 @@ include('" + Form1.Project.includes + @"setup.php');
 
                 // Criando home
                 lblMsg.Text = "Criando home";
-                Form1.CriarArquivo("Home", true, true, true, true, true, false);
+                Form1.CriarArquivo("Home", true, true, true, true, true, false, false, "Views/Layout/_Layout.php");
 
                 lblMsg.Text = "Concluído com sucesso";
                 this.isCriado = true;
@@ -307,6 +323,10 @@ include('" + Form1.Project.includes + @"setup.php');
             try
             {
                 if(e.KeyChar == '\b')
+                {
+                    e.Handled = false;
+                }
+                else if (e.KeyChar == '_')
                 {
                     e.Handled = false;
                 }

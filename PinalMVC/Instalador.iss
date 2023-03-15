@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PinalMVC"
-#define MyAppVersion "1.1.0"
+#define MyAppVersion "1.2.1"
 #define MyAppPublisher "CPSystems, Inc."
 #define MyAppURL "http://www.cpsystems.com.br/"
 #define MyAppExeName "PinalMVC.exe"
@@ -42,6 +42,7 @@ Source: "C:\Users\USER\Desktop\Projects\PinalMVC\PinalMVC\bin\Debug\*"; DestDir:
 Source: "C:\Users\USER\OneDrive\Projects\Dependencias\ndp472-kb4054530-x86-x64-allos-ptb.exe"; DestDir: "{tmp}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Users\USER\OneDrive\Projects\Dependencias\vcredist_x86.exe"; DestDir: "{tmp}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Users\USER\OneDrive\Projects\Dependencias\vcredist_x64.exe"; DestDir: "{tmp}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\USER\OneDrive\Projects\Dependencias\xampp-windows-x64-8.2.0-0-VS16-installer.exe"; DestDir: "{tmp}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -53,4 +54,5 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 Filename: "{tmp}\ndp472-kb4054530-x86-x64-allos-ptb.exe"; WorkingDir:{tmp}; StatusMsg: Instalando .Net Framework 4.7.2
 Filename: "{tmp}\vcredist_x86.exe"; Parameters: "/Q"; Flags: waituntilterminated skipifdoesntexist; StatusMsg: "Microsoft Visual C++ 2010 (x86) installation. Please Wait..."; Check: "not IsWin64";
 Filename: "{tmp}\vcredist_x64.exe"; Parameters: "/Q"; Flags: waituntilterminated skipifdoesntexist; StatusMsg: "Microsoft Visual C++ 2010 (x64) installation. Please wait..."; Check: IsWin64
+Filename: "{tmp}\xampp-windows-x64-8.2.0-0-VS16-installer.exe"; WorkingDir:{tmp}; StatusMsg: Instalando xampp 8.2.0
 

@@ -40,8 +40,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
             this.btnExecutar = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -152,15 +152,6 @@
             this.panel3.Size = new System.Drawing.Size(246, 84);
             this.panel3.TabIndex = 12;
             // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.panel1);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(246, 0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(693, 361);
-            this.panel5.TabIndex = 12;
-            // 
             // btnExecutar
             // 
             this.btnExecutar.Location = new System.Drawing.Point(3, 32);
@@ -170,6 +161,15 @@
             this.btnExecutar.Text = "Executar Projeto";
             this.btnExecutar.UseVisualStyleBackColor = true;
             this.btnExecutar.Click += new System.EventHandler(this.btnExecutar_Click);
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.panel1);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(246, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(693, 361);
+            this.panel5.TabIndex = 12;
             // 
             // frmProjeto
             // 
@@ -184,6 +184,7 @@
             this.Text = "frmProjeto";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Activated += new System.EventHandler(this.frmProjeto_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmProjeto_FormClosing);
             this.Load += new System.EventHandler(this.frmProjeto_Load);
             this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);

@@ -33,6 +33,21 @@ namespace PinalMVC
                 chbCRUD.Checked = true;
                 chbPOSTGET.Checked = true;
                 chbErrorPage.Checked = false;
+                chbPageLayout.Checked = false;
+
+                if (Directory.Exists(Form1.ProjectDir + "/" + Form1.Project.pages_layouts))
+                {
+                    foreach (string item in Directory.GetFiles(Form1.ProjectDir + "/" + Form1.Project.pages_layouts))
+                    {
+                        FileInfo fileInfo = new FileInfo(item);
+                        chbLayout.Items.Add(fileInfo.Name);
+                    }
+
+                    if(chbLayout.Items.Count > 0)
+                    {
+                        chbLayout.SelectedIndex = 0;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -51,7 +66,13 @@ namespace PinalMVC
                     return;
                 }
 
-                this.Arquivos = Form1.CriarArquivo(Form1.RemoveAcentos(txtNome.Text.Trim()), chbModel.Checked, chbView.Checked, chbController.Checked, chbCRUD.Checked, chbPOSTGET.Checked, chbErrorPage.Checked);
+                string layout = "Views/Layout/_Layout.php";
+                if (chbLayout.Items.Count > 0)
+                {
+                    layout = Form1.Project.pages_layouts + chbLayout.SelectedItem.ToString();
+                }
+
+                this.Arquivos = Form1.CriarArquivo(Form1.RemoveAcentos(txtNome.Text.Trim()), chbModel.Checked, chbView.Checked, chbController.Checked, chbCRUD.Checked, chbPOSTGET.Checked, chbErrorPage.Checked, chbPageLayout.Checked, layout);
 
                 this.Close();
             }
@@ -66,6 +87,10 @@ namespace PinalMVC
             try
             {
                 if (e.KeyChar == '\b')
+                {
+                    e.Handled = false;
+                }
+                else if (e.KeyChar == '_')
                 {
                     e.Handled = false;
                 }

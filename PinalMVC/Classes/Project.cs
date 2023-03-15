@@ -16,6 +16,7 @@ namespace PinalMVC.Classes
         public string views { get; set; }
         public string controllers { get; set; }
         public string page_errors { get; set; }
+        public string pages_layouts { get; set; }
         public string models_suffix { get; set; }
         public string views_suffix { get; set; }
         public string controllers_suffix { get; set; }
@@ -36,6 +37,7 @@ namespace PinalMVC.Classes
             this.views = "Views/";
             this.controllers = "Controllers/";
             this.page_errors = "Views/PagesErrors/";
+            this.pages_layouts = "Views/Layout/";
             this.models_suffix = ".class";
             this.views_suffix = "";
             this.controllers_suffix = "";

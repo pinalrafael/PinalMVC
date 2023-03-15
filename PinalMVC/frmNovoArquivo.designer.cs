@@ -41,11 +41,14 @@
             this.chbPOSTGET = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.chbErrorPage = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.chbLayout = new System.Windows.Forms.ComboBox();
+            this.chbPageLayout = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnIniciar
             // 
-            this.btnIniciar.Location = new System.Drawing.Point(375, 96);
+            this.btnIniciar.Location = new System.Drawing.Point(375, 133);
             this.btnIniciar.Name = "btnIniciar";
             this.btnIniciar.Size = new System.Drawing.Size(75, 23);
             this.btnIniciar.TabIndex = 7;
@@ -167,11 +170,43 @@
             this.chbErrorPage.Text = "ERRO";
             this.chbErrorPage.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 101);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(39, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "Layout";
+            // 
+            // chbLayout
+            // 
+            this.chbLayout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chbLayout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbLayout.FormattingEnabled = true;
+            this.chbLayout.Location = new System.Drawing.Point(66, 98);
+            this.chbLayout.Name = "chbLayout";
+            this.chbLayout.Size = new System.Drawing.Size(121, 21);
+            this.chbLayout.TabIndex = 18;
+            // 
+            // chbPageLayout
+            // 
+            this.chbPageLayout.AutoSize = true;
+            this.chbPageLayout.Location = new System.Drawing.Point(129, 78);
+            this.chbPageLayout.Name = "chbPageLayout";
+            this.chbPageLayout.Size = new System.Drawing.Size(58, 17);
+            this.chbPageLayout.TabIndex = 19;
+            this.chbPageLayout.Text = "Layout";
+            this.chbPageLayout.UseVisualStyleBackColor = true;
+            // 
             // frmNovoArquivo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(461, 131);
+            this.ClientSize = new System.Drawing.Size(461, 166);
+            this.Controls.Add(this.chbPageLayout);
+            this.Controls.Add(this.chbLayout);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.chbErrorPage);
             this.Controls.Add(this.chbPOSTGET);
@@ -208,5 +243,8 @@
         private System.Windows.Forms.CheckBox chbPOSTGET;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chbErrorPage;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox chbLayout;
+        private System.Windows.Forms.CheckBox chbPageLayout;
     }
 }

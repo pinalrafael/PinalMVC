@@ -2,7 +2,7 @@
 /*
  * CREATOR: RAFAEL PINAL
  * CREATED: 24/02/2023
- * UPDATED: 09/03/2023
+ * UPDATED: 15/03/2023
  */
 
 // Init System
@@ -13,7 +13,7 @@ $pmvc_config_json = file_get_contents($pmvc_dir."/config.json");
 $pmvc_config = json_decode($pmvc_config_json);
 
 // Load Vars
-$pmvc_version = "1.1.1";// Lib version
+$pmvc_version = "1.2.0";// Lib version
 $pmvc_root = $pmvc_config->root;// Folder root of index.php
 $pmvc_title = $pmvc_config->name; // Title of page.
 $pmvc_pars = array();// Array of URL paramters: URL?par0=p0&par1=p1&par2=p2&par3p3

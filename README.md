@@ -30,7 +30,8 @@
 	- Nome (obrigatório): insira um nome para a rota e arquivos.
 	- Criar (opcional): selecione os arquivos que deseja criar entre Model, View e Controller.
 	- Controller (opcional): selecione as configurações padões do seu controller entre CRUD e POST/GET.
-	- Página (opcional): selecione se deseja criar como página de erro.
+	- Página (opcional): selecione se deseja criar como página de erro ou página de layout.
+	- Layout (obrigatório): selecione a página de layout que a view será exibida.
 9. Use o click duplo sobre algum arquivo da árvore para abrir o arquivo e editar.
 10. Para executar o projeto clique em Executar Projeto e o apache será iniciado e o projeto será aberto no navegador.
 
@@ -53,9 +54,11 @@ RewriteRule ^(.*)$ index.php/?request=$1 [QSA,L,NC]
 
 2. Crie as pastas [Controllers], [Models] e [Views] na raiz de seu projeto.
 
-3. Crie seu arquivo [index.php].
+3. Crie as pastas [Layout] na pasta [Views] de seu projeto.
 
-4. Adicione o seguinte código no arquivo [index.php].
+4. Crie seu arquivo [index.php].
+
+5. Adicione o seguinte código no arquivo [index.php].
 ```php
 <?php
 // Inclui a biblioteca principal.
@@ -68,6 +71,10 @@ include('includes/PinalMVC/customroutes.php');
 // Inicializa a biblioteca.
 include('includes/PinalMVC/setup.php');
 ?>
+```
+
+6. Adicione o seguinte código no arquivo [_Layout.php] em [Views\Layout].
+```php
 <!DOCTYPE html>
 <html>
 	<head>
@@ -82,7 +89,7 @@ include('includes/PinalMVC/setup.php');
 </html>
 ```
 
-4. Configure o arquivo [index.php] como desejar mas lembre-se de manter os include, [pmvcHead()], [require($pmvc_view)] e [pmvcBody()] no arquivo.
+7. Configure o arquivo [_Layout.php] como desejar mas lembre-se de manter os include, [pmvcHead()], [require($pmvc_view)] e [pmvcBody()] no arquivo.
 
 ### CONFIGURANDO ARQUIVOS MODEL, VIEW E CONTROLLER
 OBS: Todos os nomes de arquivos, pastas e funções devem ser iguais na integra.
@@ -108,6 +115,7 @@ class Teste{
 4. Crie o arquivo [Teste.php] em [Controllers] com o seguinte código.
 ```php
 <?php
+$pmvc_layout = "Views/Layout/_Layout.php";
 $pmvc_title = "Teste";// Nome da página.
 $pmvc_Model = new Teste();// Criar um Model da página.
 
@@ -151,6 +159,8 @@ if(pmvcGetValueFunction() == "Index"){// Nomes dos arquivos e funções como criad
 - Controller: arquivo de funções do controlador. Exemplo: Controlador.php.
 - main.php: arquivo main com as funções principais.
 - customroutes.php: arquivo com as funções de rotas personalizadas
+- customhtml.php: arquivo com as funções de html personalizadas
+- setup.php: arquivo com o setup da biblioteca, deve ser incluido depois das configurações da biblioteca.
 
 ### VARIÁVEIS
 1. Exibe a versão da biblioteca. 
@@ -228,6 +238,19 @@ echo $_GET["par2"];
 ```php
 <?php 
 echo $pmvc_pars[key];
+?>
+```
+
+9. Informa a página de layout no Controller.
+```php
+<?php 
+$pmvc_layout = "Views/Layout/_Layout.php";
+?>
+
+10. Informa o caminho root do projeto. Configurado em [FUNÇÕES - 2.]
+```php
+<?php 
+echo $pmvc_root;
 ?>
 ```
 

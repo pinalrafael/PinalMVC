@@ -1,5 +1,6 @@
 <?php
 
+$pmvc_layout = "Views/Layout/_Layout.php";
 $pmvc_title = "Home";
 $pmvc_Model = new Home();
 

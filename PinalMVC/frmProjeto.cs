@@ -162,6 +162,15 @@ namespace PinalMVC
             }
         }
 
+        private void frmProjeto_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                this.AtualizaArquivoProjeto();
+            }
+            catch { }
+        }
+
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             object[] arg = (object[])e.Argument;
@@ -215,6 +224,8 @@ namespace PinalMVC
                 // Criando arquivo config.json
                 lblMsg.Text = "Criando arquivo config.json";
                 Form1.AtualizaConfig(dirproject);
+
+                this.AtualizaArquivoProjeto();
 
                 lblMsg.Text = "Atualização concluída";
 
@@ -381,6 +392,16 @@ namespace PinalMVC
                 treeNode.Tag = new object[] { fileInfo.FullName, TypesNodeTree.FILE };
 
                 this.AddNode(node.Nodes, treeNode);
+            }
+        }
+
+        private void AtualizaArquivoProjeto()
+        {
+            using (StreamWriter writer = new StreamWriter(Form1.ProjectDir + "/" + Form1.Project.nameproject + Form1.Ext, false))
+            {
+                string jsonconfig = JsonConvert.SerializeObject(Form1.Project);
+                writer.WriteLine(jsonconfig);
+                writer.Close();
             }
         }
 
