@@ -364,13 +364,13 @@ pmvcCustomRoutes(array( 'type' => 'F',
 pmvcCustomRoutes(array( 'type' => 'I', 
 'original' => '0123456789', 
 'custom' => 'custom_id' ));
-?>
 
 // Ao passar um params na sua configuração de rota você podera acessar esse valor controller.
 pmvcCustomRoutes(array( 'type' => 'F', 
 'original' => 'CustomFunctionRouteParams', 
 'custom' => 'custom_function_params',
 'params' => array(0, 1, 2, 3, 4)));
+?>
 ```
 
 ### CONFIGURAÇÕES JSON
