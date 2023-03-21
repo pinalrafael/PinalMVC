@@ -12,7 +12,11 @@
 	</head>
 	<body>
 	Version: <?php echo $pmvc_version; ?><br>
-	<a href="<?php echo $pmvc_root; ?>">Home</a> - <a href="<?php echo $pmvc_root; ?>NewPage">NewPage</a> - <a href="<?php echo $pmvc_root; ?>PageNotFound">PageNotFound</a> - <a href="<?php echo $pmvc_root; ?>custom_controller">CustomControllerRoute</a> - <a href="<?php echo $pmvc_root; ?>NewPage2">New Page Layout 2</a>
+	<a href="<?php echo $pmvc_root; ?>">Home</a> - 
+	<a href="<?php echo $pmvc_root; ?>NewPage">NewPage</a> - 
+	<a href="<?php echo $pmvc_root; ?>PageNotFound">PageNotFound</a> - 
+	<a href="<?php echo $pmvc_root; ?>custom_controller">CustomControllerRoute</a> - 
+	<a href="<?php echo $pmvc_root; ?>NewPage2">New Page Layout 2</a>
 	<br>
 	<?php require($pmvc_view); ?>
 

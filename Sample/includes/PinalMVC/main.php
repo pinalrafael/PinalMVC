@@ -2,7 +2,7 @@
 /*
  * CREATOR: RAFAEL PINAL
  * CREATED: 24/02/2023
- * UPDATED: 15/03/2023
+ * UPDATED: 21/03/2023
  */
 
 // Init System
@@ -13,7 +13,7 @@ $pmvc_config_json = file_get_contents($pmvc_dir."/config.json");
 $pmvc_config = json_decode($pmvc_config_json);
 
 // Load Vars
-$pmvc_version = "1.2.0";// Lib version
+$pmvc_version = "1.3.0";// Lib version
 $pmvc_root = $pmvc_config->root;// Folder root of index.php
 $pmvc_title = $pmvc_config->name; // Title of page.
 $pmvc_pars = array();// Array of URL paramters: URL?par0=p0&par1=p1&par2=p2&par3p3
@@ -86,12 +86,16 @@ function pmvcGetSysArgs($request){
 function pmvcGetValueController(){
 	global $pmvc_args;
 	global $pmvc_custom_routes;
+	global $pmvc_custom_routes_pars;
 
 	if(count($pmvc_custom_routes) > 0){
 		foreach($pmvc_custom_routes as $item){
 			if($item['type'] == 'C'){
 				if($item['custom'] == $pmvc_args["controller"]){
 					$pmvc_args["controller"] = $item['original'];
+					if(isset($item['params'])){
+						$pmvc_custom_routes_pars = $item['params'];
+					}
 					break;
 				}
 			}
@@ -108,12 +112,16 @@ function pmvcGetValueController(){
 function pmvcGetValueFunction(){
 	global $pmvc_args;
 	global $pmvc_custom_routes;
+	global $pmvc_custom_routes_pars;
 
 	if(count($pmvc_custom_routes) > 0){
 		foreach($pmvc_custom_routes as $item){
 			if($item['type'] == 'F'){
 				if($item['custom'] == $pmvc_args["function"]){
 					$pmvc_args["function"] = $item['original'];
+					if(isset($item['params'])){
+						$pmvc_custom_routes_pars = $item['params'];
+					}
 					break;
 				}
 			}
@@ -130,12 +138,16 @@ function pmvcGetValueFunction(){
 function pmvcGetValueId(){
 	global $pmvc_args;
 	global $pmvc_custom_routes;
+	global $pmvc_custom_routes_pars;
 
 	if(count($pmvc_custom_routes) > 0){
 		foreach($pmvc_custom_routes as $item){
 			if($item['type'] == 'I'){
 				if($item['custom'] == $pmvc_args["id"]){
 					$pmvc_args["id"] = $item['original'];
+					if(isset($item['params'])){
+						$pmvc_custom_routes_pars = $item['params'];
+					}
 					break;
 				}
 			}

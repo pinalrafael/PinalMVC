@@ -24,6 +24,12 @@ pmvcCustomRoutes(array( 'type' => 'I',
 'original' => '0123456789', 
 'custom' => 'custom_id' ));
 
+// Configure route custom for function with params
+pmvcCustomRoutes(array( 'type' => 'F', 
+'original' => 'CustomFunctionRouteParams', 
+'custom' => 'custom_function_params',
+'params' => array(0, 1, 2, 3, 4)));
+
 // Include the setup lib
 include('includes/PinalMVC/setup.php');
 

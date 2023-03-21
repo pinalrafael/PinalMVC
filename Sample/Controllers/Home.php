@@ -118,6 +118,14 @@ if(pmvcGetValueFunction() == "Index"){
 	} else if(isset($_POST)){
 	
 	}
+}else if(pmvcGetValueFunction() == "CustomFunctionRouteParams"){
+	if(isset($_GET)){
+		$msg = implode(" ",$pmvc_custom_routes_pars);
+
+		pmvcView("Home", "Index");
+	} else if(isset($_POST)){
+	
+	}
 }else{
 	pmvcView("PagesErrors", "Error404", array('msg' => 'Function '.pmvcGetValueFunction().' not found'));
 }

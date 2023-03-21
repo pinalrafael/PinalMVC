@@ -254,6 +254,13 @@ echo $pmvc_root;
 ?>
 ```
 
+11. Informa os parâmetros enviados em [FUNÇÕES - 10.]
+```php
+<?php 
+echo $pmvc_custom_routes_pars;
+?>
+```
+
 ### FUNÇÕES
 1. pmvcView: Chamar uma view no controller. Por padrão será chamada a view com o nome da function.
 - $controller: nome do controller que se encontra a view.
@@ -338,6 +345,7 @@ echo pmvcBody();
 	- type: Tipo de rota: C -> Controller, F -> Function e I -> Id.
 	- original: Valor original da rota no código e arquivos.
 	- custom: Valor da rota customizada em URL.
+	- params (opcional): Valor que pode ser enviado para as rotas e acessado no controller.
 ```php
 <?php
 // No index.php após o include do main, customroutes e antes do setup.
@@ -357,6 +365,12 @@ pmvcCustomRoutes(array( 'type' => 'I',
 'original' => '0123456789', 
 'custom' => 'custom_id' ));
 ?>
+
+// Ao passar um params na sua configuração de rota você podera acessar esse valor controller.
+pmvcCustomRoutes(array( 'type' => 'F', 
+'original' => 'CustomFunctionRouteParams', 
+'custom' => 'custom_function_params',
+'params' => array(0, 1, 2, 3, 4)));
 ```
 
 ### CONFIGURAÇÕES JSON
