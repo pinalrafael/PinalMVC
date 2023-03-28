@@ -20,7 +20,7 @@ namespace PinalMVC
 {
     public partial class Form1 : Form
     {
-        private string Versao = "1.2.1";
+        private string Versao = "1.3.0";
         public static string Nome = "PinalMVC";
         public static string Ext = ".pmvc";
         public static string ExtNome = "Arquivo PinalMVC (*.pmvc)";
@@ -298,7 +298,7 @@ class " + nome + @"{
 
                     if (pcrud && !perropage)
                     {
-                        string idcrud = "<br><?php echo $id; ?>";
+                        string idcrud = "<br><?php echo pmvcGetValueId(); ?>";
 
                         string pagenamecrud = namefolder + "\\Create" + Form1.Project.views_suffix;
                         caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
@@ -336,6 +336,12 @@ class " + nome + @"{
 
                 if (pcontroller)
                 {
+                    string globals = @"global $pmvc_title;// Title your page
+	global $pmvc_Model;// Your object model
+	global $pmvc_args;// MVC URL arguments
+	global $pmvc_custom_head;// Custom head page
+	global $pmvc_custom_body;// Custom head body
+	global $pmvc_custom_routes_pars;// Custom route parameters";
                     caminho = Form1.ProjectDir + "\\" + Form1.Project.controllers + nome + Form1.Project.controllers_suffix + ".php";
                     using (StreamWriter writer = new StreamWriter(caminho, false))
                     {
@@ -344,9 +350,7 @@ class " + nome + @"{
 
                         if (ppostget)
                         {
-                            postget = @"if(isset($_GET)){
-		
-	}
+                            postget = @"
     if(isset($_POST)){
 	    
 	}";
@@ -354,17 +358,26 @@ class " + nome + @"{
 
                         if (pcrud && !perropage)
                         {
-                            crud = @"else if(pmvcGetValueFunction() == ""Create""){
+                            crud = @"
+function Create(){
+    " + globals + @"   
+    
     $pmvc_title = 'Create " + nome + @"';
-	" + postget + @"
-}else if(pmvcGetValueFunction() == ""Update""){
-    $id = pmvcGetValueId();
+    " + postget + @"
+}
+
+function Update($id){
+    " + globals + @"   
+    
     $pmvc_title = 'Update " + nome + @" '.$id;
-	" + postget + @"
-}else if(pmvcGetValueFunction() == ""Delete""){
-    $id = pmvcGetValueId();
+    " + postget + @"
+}
+
+function Delete($id){
+    " + globals + @"   
+    
     $pmvc_title = 'Delete " + nome + @" '.$id;
-	" + postget + @"
+    " + postget + @"
 }";
                         }
 
@@ -374,11 +387,11 @@ $pmvc_layout = """ + layout + @""";
 $pmvc_title = """ + nome + @""";
 $pmvc_Model = new " + nome + @"();
 
-if (pmvcGetValueFunction() == ""Index""){
+function Index(){
+    " + globals + @"    
     " + postget + @"
-}" + crud + @"else{
-    pmvcView(""PagesErrors"", ""Error404"", array('msg' => 'Function not found'));
 }
+" + crud + @"
 
 ?>";
                         writer.WriteLine(controller);

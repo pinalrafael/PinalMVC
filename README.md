@@ -119,33 +119,57 @@ $pmvc_layout = "Views/Layout/_Layout.php";
 $pmvc_title = "Teste";// Nome da página.
 $pmvc_Model = new Teste();// Criar um Model da página.
 
-if(pmvcGetValueFunction() == "Index"){// Nomes dos arquivos e funções como criados no item 2.
-	if(isset($_GET)){// Recebe um GET na página.
-		
-	} else if(isset($_POST)){// Recebe um POST na página.
-	
+function Index(){
+	global $pmvc_title;// Título da sua página para acesso na função
+	global $pmvc_Model;// Model para acesso na função
+	global $pmvc_args;// URL argumentos para acesso na função
+	global $pmvc_custom_head;// Head tags customizados para acesso na função
+	global $pmvc_custom_body;// body tags customizados para acesso na função
+	global $pmvc_custom_routes_pars;// Prâetros de rodas customizadas para acesso na função
+
+	// Seu código GET
+
+	if(isset($_POST)){// Seu código POST
 	}
-}else if(pmvcGetValueFunction() == "Create"){
-	if(isset($_GET)){
-		
-	} else if(isset($_POST)){
-	
-	}
-}else if(pmvcGetValueFunction() == "Update"){
-	if(isset($_GET)){
-		
-	} else if(isset($_POST)){
-		
-	}
-}else if(pmvcGetValueFunction() == "Delete"){
-	if(isset($_GET)){
-		
-	} else if(isset($_POST)){
-	
-	}
-}else{
-	pmvcView("PagesErrors", "Error404", array('msg' => 'Função: '.pmvcGetValueFunction().' não encontrada!'));
 }
+
+function Create(){
+	global $pmvc_title;// Título da sua página para acesso na função
+	global $pmvc_Model;// Model para acesso na função
+	global $pmvc_args;// URL argumentos para acesso na função
+	global $pmvc_custom_head;// Head tags customizados para acesso na função
+	global $pmvc_custom_body;// body tags customizados para acesso na função
+	global $pmvc_custom_routes_pars;// Prâetros de rodas customizadas para acesso na função
+
+	if(isset($_POST)){
+	}
+}
+
+function Update($id){
+	global $pmvc_title;// Título da sua página para acesso na função
+	global $pmvc_Model;// Model para acesso na função
+	global $pmvc_args;// URL argumentos para acesso na função
+	global $pmvc_custom_head;// Head tags customizados para acesso na função
+	global $pmvc_custom_body;// body tags customizados para acesso na função
+	global $pmvc_custom_routes_pars;// Prâetros de rodas customizadas para acesso na função
+
+	if(isset($_POST)){
+	}
+}
+
+function Delete($id){
+	global $pmvc_title;// Título da sua página para acesso na função
+	global $pmvc_Model;// Model para acesso na função
+	global $pmvc_args;// URL argumentos para acesso na função
+	global $pmvc_custom_head;// Head tags customizados para acesso na função
+	global $pmvc_custom_body;// body tags customizados para acesso na função
+	global $pmvc_custom_routes_pars;// Prâetros de rodas customizadas para acesso na função
+
+	if(isset($_POST)){
+	}
+}
+
+// Demais funções para views
 ?>
 ```
 

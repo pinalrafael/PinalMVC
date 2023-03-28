@@ -11,6 +11,10 @@ if(file_exists($pmvc_model)){
 }
 if(file_exists($pmvc_controller)){
 	include($pmvc_controller);
+
+	if(function_exists(pmvcGetValueFunction())){
+		call_user_func(pmvcGetValueFunction(), pmvcGetValueId());
+	}
 }
 
 // Check exists view file
