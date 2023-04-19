@@ -44,6 +44,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.chbLayout = new System.Windows.Forms.ComboBox();
             this.chbPageLayout = new System.Windows.Forms.CheckBox();
+            this.chbApi = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnIniciar
@@ -199,11 +200,22 @@
             this.chbPageLayout.Text = "Layout";
             this.chbPageLayout.UseVisualStyleBackColor = true;
             // 
+            // chbApi
+            // 
+            this.chbApi.AutoSize = true;
+            this.chbApi.Location = new System.Drawing.Point(15, 133);
+            this.chbApi.Name = "chbApi";
+            this.chbApi.Size = new System.Drawing.Size(43, 17);
+            this.chbApi.TabIndex = 20;
+            this.chbApi.Text = "API";
+            this.chbApi.UseVisualStyleBackColor = true;
+            // 
             // frmNovoArquivo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(461, 166);
+            this.Controls.Add(this.chbApi);
             this.Controls.Add(this.chbPageLayout);
             this.Controls.Add(this.chbLayout);
             this.Controls.Add(this.label5);
@@ -246,5 +258,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox chbLayout;
         private System.Windows.Forms.CheckBox chbPageLayout;
+        private System.Windows.Forms.CheckBox chbApi;
     }
 }

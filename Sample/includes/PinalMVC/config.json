@@ -8,6 +8,7 @@
   "views_suffix": "",
   "controllers_suffix": "",
   "page_errors_suffix": "",
+  "api":  false,
   "name": "PinalMVC",
   "author": "Rafael Pinal",
   "repository": {

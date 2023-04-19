@@ -26,6 +26,7 @@ namespace PinalMVC.Classes
         public string bugs { get; set; }
         public string repository { get; set; }
         public string homepage { get; set; }
+        public bool api { get; set; }
 
         public Project()
         {
@@ -47,6 +48,7 @@ namespace PinalMVC.Classes
             this.repository = "https://github.com/pinalrafael/PinalMVC";
             this.bugs = "https://github.com/pinalrafael/PinalMVC/issues";
             this.homepage = "http://rafaelpinal.siteprofissional.com/PinalMVC/";
+            this.api = false;
         }
     }
 }

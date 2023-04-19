@@ -13,7 +13,12 @@ if(file_exists($pmvc_controller)){
 	include($pmvc_controller);
 
 	if(function_exists(pmvcGetValueFunction())){
-		call_user_func(pmvcGetValueFunction(), pmvcGetValueId());
+		$pmvc_APIResult = call_user_func(pmvcGetValueFunction(), pmvcGetValueId());
+		// Check if API
+		if(isset($pmvc_APIResult)){
+			echo json_encode($pmvc_APIResult);
+			die();
+		}
 	}
 }
 

@@ -11,6 +11,7 @@ function Index(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 
 	if(isset($_POST)){
 	}

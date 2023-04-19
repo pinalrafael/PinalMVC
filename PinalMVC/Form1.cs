@@ -20,7 +20,7 @@ namespace PinalMVC
 {
     public partial class Form1 : Form
     {
-        private string Versao = "1.3.0";
+        private string Versao = "1.4.0";
         public static string Nome = "PinalMVC";
         public static string Ext = ".pmvc";
         public static string ExtNome = "Arquivo PinalMVC (*.pmvc)";
@@ -237,7 +237,7 @@ namespace PinalMVC
             }
         }
 
-        public static List<string> CriarArquivo(string pnome, bool pmodel, bool pview, bool pcontroller, bool pcrud, bool ppostget, bool perropage, bool pagelayout, string layout)
+        public static List<string> CriarArquivo(string pnome, bool pmodel, bool pview, bool pcontroller, bool pcrud, bool ppostget, bool perropage, bool pagelayout, string layout, bool api)
         {
             List<string> retorno = new List<string>();
             string caminho = "";
@@ -263,74 +263,77 @@ class " + nome + @"{
                     retorno.Add(caminho);
                 }
 
-                if (pview)
+                if (!api)
                 {
-                    string namefolder = Form1.Project.views + nome;
-                    if (!Directory.Exists(Form1.ProjectDir + "\\" + namefolder))
+                    if (pview)
                     {
-                        Directory.CreateDirectory(Form1.ProjectDir + "\\" + namefolder);
-                    }
+                        string namefolder = Form1.Project.views + nome;
+                        if (!Directory.Exists(Form1.ProjectDir + "\\" + namefolder))
+                        {
+                            Directory.CreateDirectory(Form1.ProjectDir + "\\" + namefolder);
+                        }
 
-                    string pagename = namefolder + "\\Index" + Form1.Project.views_suffix;
-                    if (perropage)
-                    {
-                        pagename = Form1.Project.page_errors + nome + Form1.Project.page_errors_suffix;
-                    }
+                        string pagename = namefolder + "\\Index" + Form1.Project.views_suffix;
+                        if (perropage)
+                        {
+                            pagename = Form1.Project.page_errors + nome + Form1.Project.page_errors_suffix;
+                        }
 
-                    caminho = Form1.ProjectDir + "\\" + pagename + ".php";
-                    using (StreamWriter writer = new StreamWriter(caminho, false))
-                    {
-                        string indexcrud = "";
+                        caminho = Form1.ProjectDir + "\\" + pagename + ".php";
+                        using (StreamWriter writer = new StreamWriter(caminho, false))
+                        {
+                            string indexcrud = "";
+
+                            if (pcrud && !perropage)
+                            {
+                                indexcrud = @"<br><a href='<?php echo $pmvc_root; ?>" + nome + @"/Create'>Cadastro</a><br>
+<a href='<?php echo $pmvc_root; ?>" + nome + @"/Update/1'>Update 1</a><br>
+<a href='<?php echo $pmvc_root; ?>" + nome + @"/Delete/1'>Delete 1</a><br>";
+                            }
+
+                            string view = @"<h1>" + nome + @" Index</h1>
+" + indexcrud;
+                            writer.WriteLine(view);
+                            writer.Close();
+                        }
+                        retorno.Add(caminho);
 
                         if (pcrud && !perropage)
                         {
-                            indexcrud = @"<br><a href='<?php echo $pmvc_root; ?>" + nome + @"/Create'>Cadastro</a><br>
-<a href='<?php echo $pmvc_root; ?>" + nome + @"/Update/1'>Update 1</a><br>
-<a href='<?php echo $pmvc_root; ?>" + nome + @"/Delete/1'>Delete 1</a><br>";
-                        }
+                            string idcrud = "<br><?php echo pmvcGetValueId(); ?>";
 
-                        string view = @"<h1>" + nome + @" Index</h1>
-" + indexcrud;
-                        writer.WriteLine(view);
-                        writer.Close();
-                    }
-                    retorno.Add(caminho);
+                            string pagenamecrud = namefolder + "\\Create" + Form1.Project.views_suffix;
+                            caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
+                            using (StreamWriter writer = new StreamWriter(caminho, false))
+                            {
+                                string view = @"<h1>" + nome + @" Create</h1>";
+                                writer.WriteLine(view);
+                                writer.Close();
+                            }
+                            retorno.Add(caminho);
 
-                    if (pcrud && !perropage)
-                    {
-                        string idcrud = "<br><?php echo pmvcGetValueId(); ?>";
-
-                        string pagenamecrud = namefolder + "\\Create" + Form1.Project.views_suffix;
-                        caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
-                        using (StreamWriter writer = new StreamWriter(caminho, false))
-                        {
-                            string view = @"<h1>" + nome + @" Create</h1>";
-                            writer.WriteLine(view);
-                            writer.Close();
-                        }
-                        retorno.Add(caminho);
-
-                        pagenamecrud = namefolder + "\\Update" + Form1.Project.views_suffix;
-                        caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
-                        using (StreamWriter writer = new StreamWriter(caminho, false))
-                        {
-                            string view = @"<h1>" + nome + @" Update</h1>
+                            pagenamecrud = namefolder + "\\Update" + Form1.Project.views_suffix;
+                            caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
+                            using (StreamWriter writer = new StreamWriter(caminho, false))
+                            {
+                                string view = @"<h1>" + nome + @" Update</h1>
 " + idcrud;
-                            writer.WriteLine(view);
-                            writer.Close();
-                        }
-                        retorno.Add(caminho);
+                                writer.WriteLine(view);
+                                writer.Close();
+                            }
+                            retorno.Add(caminho);
 
-                        pagenamecrud = namefolder + "\\Delete" + Form1.Project.views_suffix;
-                        caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
-                        using (StreamWriter writer = new StreamWriter(caminho, false))
-                        {
-                            string view = @"<h1>" + nome + @" Delete</h1>
+                            pagenamecrud = namefolder + "\\Delete" + Form1.Project.views_suffix;
+                            caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
+                            using (StreamWriter writer = new StreamWriter(caminho, false))
+                            {
+                                string view = @"<h1>" + nome + @" Delete</h1>
 " + idcrud;
-                            writer.WriteLine(view);
-                            writer.Close();
+                                writer.WriteLine(view);
+                                writer.Close();
+                            }
+                            retorno.Add(caminho);
                         }
-                        retorno.Add(caminho);
                     }
                 }
 
@@ -341,7 +344,19 @@ class " + nome + @"{
 	global $pmvc_args;// MVC URL arguments
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
-	global $pmvc_custom_routes_pars;// Custom route parameters";
+	global $pmvc_custom_routes_pars;// Custom route parameters
+    global $pmvc_Headers;// HTTP headers";
+
+                    if (api)
+                    {
+                        globals = @"global $pmvc_Model;// Your object model
+	global $pmvc_args;// MVC URL arguments
+	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_APIRequest;// POST request in API
+	global $pmvc_Headers;// HTTP headers
+	global $pmvc_APIMethod;// Method request API";
+                    }
+
                     caminho = Form1.ProjectDir + "\\" + Form1.Project.controllers + nome + Form1.Project.controllers_suffix + ".php";
                     using (StreamWriter writer = new StreamWriter(caminho, false))
                     {
@@ -356,9 +371,50 @@ class " + nome + @"{
 	}";
                         }
 
-                        if (pcrud && !perropage)
+                        if (api)
                         {
-                            crud = @"
+                            if (pcrud && !perropage)
+                            {
+                                crud = @"
+function Create(){
+    " + globals + @"   
+
+    return array('response' => true, 'data' => 'Create');
+}
+
+function Update($id){
+    " + globals + @"   
+
+    return array('response' => true, 'data' => 'Update '.$id);
+}
+
+function Delete($id){
+    " + globals + @"   
+
+    return array('response' => true, 'data' => 'Delete '.$id);
+}";
+                            }
+
+                            string controller = @"<?php
+header('Content-Type: application/json');
+
+$pmvc_Model = new " + nome + @"();
+
+function Index(){
+    " + globals + @"   
+    
+    return array('response' => true, 'data' => 'Index');
+}
+" + crud + @"
+
+?>";
+                            writer.WriteLine(controller);
+                        }
+                        else
+                        {
+                            if (pcrud && !perropage)
+                            {
+                                crud = @"
 function Create(){
     " + globals + @"   
     
@@ -379,9 +435,9 @@ function Delete($id){
     $pmvc_title = 'Delete " + nome + @" '.$id;
     " + postget + @"
 }";
-                        }
+                            }
 
-                        string controller = @"<?php
+                            string controller = @"<?php
 
 $pmvc_layout = """ + layout + @""";
 $pmvc_title = """ + nome + @""";
@@ -394,7 +450,8 @@ function Index(){
 " + crud + @"
 
 ?>";
-                        writer.WriteLine(controller);
+                            writer.WriteLine(controller);
+                        }
                         writer.Close();
                     }
                     retorno.Add(caminho);

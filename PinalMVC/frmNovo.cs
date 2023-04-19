@@ -84,6 +84,7 @@ namespace PinalMVC
                 Form1.Project.views_suffix = txtSufixoView.Text.Trim();
                 Form1.Project.controllers_suffix = txtSufixoController.Text.Trim();
                 Form1.Project.page_errors_suffix = txtSufixoPageError.Text.Trim();
+                Form1.Project.api = chbApi.Checked;
 
                 // Criando pastas
                 string dirproject = txtCaminho.Text.Trim() + Form1.RemoveAcentos(txtNome.Text.Trim());
@@ -222,6 +223,7 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/?request=$1 [QSA,L,NC]
+RewriteRule . - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>";
                     writer.WriteLine(htaccess);
                     writer.Close();
@@ -304,7 +306,7 @@ include('" + Form1.Project.includes + @"setup.php');
 
                 // Criando home
                 lblMsg.Text = "Criando home";
-                Form1.CriarArquivo("Home", true, true, true, true, true, false, false, "Views/Layout/_Layout.php");
+                Form1.CriarArquivo("Home", true, true, true, true, true, false, false, "Views/Layout/_Layout.php", Form1.Project.api);
 
                 lblMsg.Text = "Concluído com sucesso";
                 this.isCriado = true;

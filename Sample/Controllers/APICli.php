@@ -1,8 +1,8 @@
 <?php
 
 $pmvc_layout = "Views/Layout/_Layout.php";
-$pmvc_title = "NewPage";
-$pmvc_Model = new NewPage();
+$pmvc_title = "APICli";
+$pmvc_Model = new APICli();
 
 function Index(){
 	global $pmvc_title;// Title your page
@@ -15,6 +15,11 @@ function Index(){
 
 	if(isset($_POST)){
 	}
+
+	$data = pmvcCallAPI('GET', 'http://rafaelpinal.siteprofissional.com/PinalMVC/RouteAPI');
+	$response = json_decode($data, true);
+
+	$pmvc_Model->list = $response["data"];
 }
 
 function Create(){
@@ -28,6 +33,11 @@ function Create(){
 
 	if(isset($_POST)){
 	}
+
+	$data = pmvcCallAPI('POST', 'http://rafaelpinal.siteprofissional.com/PinalMVC/RouteAPI/Create', array('name' => 'Send By Client API'));
+	$response = json_decode($data, true);
+
+	$pmvc_Model->msg = $response["data"];
 }
 
 function Update($id){
@@ -39,11 +49,13 @@ function Update($id){
 	global $pmvc_custom_routes_pars;// Custom route parameters
 	global $pmvc_Headers;// HTTP headers
 
-	$pmvc_Model->id = $id;
-	$pmvc_Model->UpdateMSG();
-
 	if(isset($_POST)){
 	}
+
+	$data = pmvcCallAPI('PUT', 'http://rafaelpinal.siteprofissional.com/PinalMVC/RouteAPI/Update/'.$id);
+	$response = json_decode($data, true);
+
+	$pmvc_Model->msg = $response["data"];
 }
 
 function Delete($id){
@@ -55,11 +67,13 @@ function Delete($id){
 	global $pmvc_custom_routes_pars;// Custom route parameters
 	global $pmvc_Headers;// HTTP headers
 
-	$pmvc_Model->id = pmvcGetValueId();
-	$pmvc_Model->UpdateMSG();
-
 	if(isset($_POST)){
 	}
+
+	$data = pmvcCallAPI('DELETE', 'http://rafaelpinal.siteprofissional.com/PinalMVC/RouteAPI/Delete/'.$id, false, array('Authorization: 9876543210', 'APIKey: 1234567890'));
+	$response = json_decode($data, true);
+
+	$pmvc_Model->msg = "Authorization: ".$response["data"]["Authorization"]." APIKey: ".$response["data"]["Apikey"];
 }
 
 ?>

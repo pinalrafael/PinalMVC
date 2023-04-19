@@ -10,6 +10,7 @@ function Index(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 	global $msg;
 
 	if(isset($_POST)){
@@ -25,6 +26,7 @@ function NewFunction(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 	global $msg;
 
 	$msg = "NewFunction";
@@ -42,6 +44,7 @@ function Arguments(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 	global $msg;
 
 	$msg = $pmvc_args["arg0"]." - ".$pmvc_args["arg1"]." - ".$pmvc_args["arg2"]." - ".$pmvc_args["arg3"];
@@ -59,6 +62,7 @@ function Parameters(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 	global $msg;
 
 	$msg = $_GET["par0"]." - ".$_GET["par1"]." - ".$_GET["par2"]." - ".$_GET["custompar"];
@@ -76,6 +80,7 @@ function CustomScript(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 
 	$pmvc_custom_body = "<script>alert('Custom Script'); </script>";
 
@@ -92,6 +97,7 @@ function CustomHead(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 	global $msg;
 
 	$pmvc_custom_head = "<style>.csscustom{ color: red; } </style>";
@@ -111,6 +117,7 @@ function CustomBootstrap(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 	global $msg;
 
 	pmvcCSS(array( 'href' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css', 
@@ -169,6 +176,7 @@ function CustomFunctionRoute(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 	global $msg;
 
 	$msg = "CustomFunctionRoute";
@@ -186,6 +194,7 @@ function CustomIdRoute($id){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 	global $msg;
 
 	$pmvc_Model->id = $id;
@@ -204,6 +213,7 @@ function CustomFunctionRouteParams(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 	global $msg;
 
 	$msg = implode(" ",$pmvc_custom_routes_pars);
@@ -221,6 +231,7 @@ function Form(){
 	global $pmvc_custom_head;// Custom head page
 	global $pmvc_custom_body;// Custom head body
 	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_Headers;// HTTP headers
 	global $msg;
 
 	$msg = "No name";

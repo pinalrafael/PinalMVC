@@ -2,7 +2,7 @@
 /*
  * CREATOR: RAFAEL PINAL
  * CREATED: 24/02/2023
- * UPDATED: 27/03/2023
+ * UPDATED: 19/04/2023
  */
 
 // Init System
@@ -13,10 +13,13 @@ $pmvc_config_json = file_get_contents($pmvc_dir."/config.json");
 $pmvc_config = json_decode($pmvc_config_json);
 
 // Load Vars
-$pmvc_version = "1.4.0";// Lib version
+$pmvc_version = "1.5.0";// Lib version
 $pmvc_root = $pmvc_config->root;// Folder root of index.php
 $pmvc_title = $pmvc_config->name; // Title of page.
 $pmvc_pars = array();// Array of URL paramters: URL?par0=p0&par1=p1&par2=p2&par3p3
+$pmvc_APIRequest = json_decode(file_get_contents('php://input'), true);// POST request in API: $pmvc_APIRequest["key"]
+$pmvc_Headers = apache_request_headers();// HTTP headersa
+$pmvc_APIMethod = $_SERVER['REQUEST_METHOD'];// Request method
 
 // Load system arguments
 $pmvc_args = pmvcGetSysArgs($_GET);// Array of arguments: URL/arg0/arg1/arg2/arg3/
@@ -195,5 +198,61 @@ function pmvcGetURLController(){
 	$arg_controller = pmvcGetValueController();
 
 	return $pmvc_config->controllers.$arg_controller.$pmvc_config->controllers_suffix.'.php';
+}
+
+/*
+ * Execute POST, GET, PUT, DELETE... int API
+ * $method: Method your request
+ * $url: URL your request
+ * $data (Optional): Data to send API array('key1' => 'value1', 'key2' => 'value2'), false when not sending data
+ * $headers (Optional): Array custom header array('Authorization:9876543210', 'APIKey: 1234567890')
+ * return: Json return your API
+ */
+function pmvcCallAPI($method, $url, $data = false, $headers = array()){
+   $curl = curl_init();
+   switch ($method){
+      case "POST":
+         curl_setopt($curl, CURLOPT_POST, 1);
+         if ($data)
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+         break;
+      case "PUT":
+         curl_setopt($curl, CURLOPT_PUT, 1);
+         if ($data)
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));					
+         break;
+	  case "DELETE":
+         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+         if ($data)
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));			 					
+         break;
+      default:
+         if ($data)
+            $url = sprintf("%s?%s", $url, http_build_query(json_encode($data)));
+   }
+   // OPTIONS:
+   curl_setopt($curl, CURLOPT_URL, $url);
+
+   if(!isset($headers)){
+	   $headers = array('Content-Type: application/json');
+   }else{
+	   foreach ($headers as $head) { 
+		   if(strpos(strtolower($head), strtolower('Content-Type')) !== true){
+			   array_push($headers, 'Content-Type: application/json');
+			   break;
+		   }
+	   }
+   }
+
+   curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+   curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+   // EXECUTE:
+   $result = curl_exec($curl);
+   if(!$result){
+	   $result = "Connection Failure";
+   }
+   curl_close($curl);
+   return $result;
 }
 ?>

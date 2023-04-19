@@ -1,6 +1,12 @@
 # PinalMVC [PT_BR]
 - Software C# desktop para criação do projeto, atualização da biblioteca, criação dos arquivos nos padões da biblioteca e edição dos arquivos do projeto.
 - Biblioteca simples para padronização de projetos em PHP no formato MVC.
+- Criação de projetos web MVC e projetos APIs MVC.
+- Compatível com múltiplos arquivos de layout.
+- HTML customizável pelo controller.
+- Rotas customizaveis.
+- Possibilidade de camuflar rotas.
+- Ilimitados argumentos e parâmetros de URL.
 
 -----
 - [**Exemplo**](http://rafaelpinal.siteprofissional.com/PinalMVC/).
@@ -23,6 +29,7 @@
 	- Sufixo View (opcional): sufixo para os arquivos da View. Ficará após o nome do arquivo e antes do .php.
 	- Sufixo Controller (opcional): sufixo para os arquivos do Controller. Ficará após o nome do arquivo e antes do .php.
 	- Sufixo Page Error (opcional): sufixo para os arquivos das páginas de erro. Ficará após o nome do arquivo e antes do .php.
+	- API (opcional): selecione para criar um projeto de API.
 	- Clique em Criar para criar um projeto com as conficurações iniciais.
 6. Para abrir um projeto já criado clique em Carregar Projeto e selecione o arquivo do projeto desejado.
 7. Com o projeto aberto, para atualizar a biblioteca PinalMVC clique em Atualizar Biblioteca.
@@ -32,6 +39,7 @@
 	- Controller (opcional): selecione as configurações padões do seu controller entre CRUD e POST/GET.
 	- Página (opcional): selecione se deseja criar como página de erro ou página de layout.
 	- Layout (obrigatório): selecione a página de layout que a view será exibida.
+	- API (opcional): selecione para criar um arquivo de API.
 9. Use o click duplo sobre algum arquivo da árvore para abrir o arquivo e editar.
 10. Para executar o projeto clique em Executar Projeto e o apache será iniciado e o projeto será aberto no navegador.
 
@@ -46,6 +54,7 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/?request=$1 [QSA,L,NC]
+RewriteRule . - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
 ```
 
@@ -126,6 +135,7 @@ function Index(){
 	global $pmvc_custom_head;// Head tags customizados para acesso na função
 	global $pmvc_custom_body;// body tags customizados para acesso na função
 	global $pmvc_custom_routes_pars;// Prâetros de rodas customizadas para acesso na função
+	global $pmvc_Headers;// HTTP headers
 
 	// Seu código GET
 
@@ -140,6 +150,7 @@ function Create(){
 	global $pmvc_custom_head;// Head tags customizados para acesso na função
 	global $pmvc_custom_body;// body tags customizados para acesso na função
 	global $pmvc_custom_routes_pars;// Prâetros de rodas customizadas para acesso na função
+	global $pmvc_Headers;// HTTP headers
 
 	if(isset($_POST)){
 	}
@@ -152,6 +163,7 @@ function Update($id){
 	global $pmvc_custom_head;// Head tags customizados para acesso na função
 	global $pmvc_custom_body;// body tags customizados para acesso na função
 	global $pmvc_custom_routes_pars;// Prâetros de rodas customizadas para acesso na função
+	global $pmvc_Headers;// HTTP headers
 
 	if(isset($_POST)){
 	}
@@ -164,12 +176,66 @@ function Delete($id){
 	global $pmvc_custom_head;// Head tags customizados para acesso na função
 	global $pmvc_custom_body;// body tags customizados para acesso na função
 	global $pmvc_custom_routes_pars;// Prâetros de rodas customizadas para acesso na função
+	global $pmvc_Headers;// HTTP headers
 
 	if(isset($_POST)){
 	}
 }
 
 // Demais funções para views
+?>
+```
+
+5. Para criar uma API crie o arquivo [TesteAPI.class.php] em [Models] e [TesteAPI.php] em [Controllers] com o seguinte código.
+```php
+<?php
+$pmvc_Model = new TesteAPI();// Criar um Model da página.
+
+function Index(){
+	global $pmvc_Model;// Your object model
+	global $pmvc_args;// MVC URL arguments
+	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_APIRequest;// POST request in API
+	global $pmvc_Headers;// HTTP headers
+	global $pmvc_APIMethod;// Method request API
+
+	return array('response' => true, 'data' => 'Your data return');
+}
+
+function Create(){
+	global $pmvc_Model;// Your object model
+	global $pmvc_args;// MVC URL arguments
+	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_APIRequest;// POST request in API
+	global $pmvc_Headers;// HTTP headers
+	global $pmvc_APIMethod;// Method request API
+
+	return array('response' => true, 'data' => 'Your data return');
+}
+
+function Update($id){
+	global $pmvc_Model;// Your object model
+	global $pmvc_args;// MVC URL arguments
+	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_APIRequest;// POST request in API
+	global $pmvc_Headers;// HTTP headers
+	global $pmvc_APIMethod;// Method request API
+
+	return array('response' => true, 'data' => 'Your data return');
+}
+
+function Delete($id){
+	global $pmvc_Model;// Your object model
+	global $pmvc_args;// MVC URL arguments
+	global $pmvc_custom_routes_pars;// Custom route parameters
+	global $pmvc_APIRequest;// POST request in API
+	global $pmvc_Headers;// HTTP headers
+	global $pmvc_APIMethod;// Method request API
+
+	return array('response' => true, 'data' => 'Your data return');
+}
+
+// Demais funções de rotas da API
 ?>
 ```
 
@@ -285,6 +351,27 @@ echo $pmvc_custom_routes_pars;
 ?>
 ```
 
+12. Informa as requisições via POST na API no formato json
+```php
+<?php 
+echo $pmvc_APIRequest["key"];
+?>
+```
+
+13. Informa o header da sua página no formato json
+```php
+<?php 
+echo $pmvc_Headers["key"];
+?>
+```
+
+14. Informa o method da requisição
+```php
+<?php 
+echo $pmvc_APIMethod;
+?>
+```
+
 ### FUNÇÕES
 1. pmvcView: Chamar uma view no controller. Por padrão será chamada a view com o nome da function.
 - $controller: nome do controller que se encontra a view.
@@ -394,6 +481,26 @@ pmvcCustomRoutes(array( 'type' => 'F',
 'original' => 'CustomFunctionRouteParams', 
 'custom' => 'custom_function_params',
 'params' => array(0, 1, 2, 3, 4)));
+?>
+```
+
+11. pmvcCallAPI: Envia requisições para API.
+- method: Metodo da requisição POST, GET, PUT, DELETE.
+- data: Dados para ser enviado à API, false quando não houver dados.
+- headers: Header array customizado. Para receber os headers veja [VARIÁVEIS - 13.]
+```php
+<?php
+// GET
+$data = pmvcCallAPI('GET', 'URL your API');
+$response = json_decode($data, true);
+
+// POST Send Data
+$data = pmvcCallAPI('POST', 'URL your API', array('name' => 'Send By Client API'));
+$response = json_decode($data, true);
+
+// DELETE Header Custom
+$data = pmvcCallAPI('DELETE', 'URL your API', false, array('Authorization: 9876543210', 'APIKey: 1234567890'));
+$response = json_decode($data, true);
 ?>
 ```
 
