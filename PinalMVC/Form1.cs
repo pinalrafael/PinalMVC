@@ -20,7 +20,7 @@ namespace PinalMVC
 {
     public partial class Form1 : Form
     {
-        private string Versao = "1.4.0";
+        private string Versao = "1.5.0";
         public static string Nome = "PinalMVC";
         public static string Ext = ".pmvc";
         public static string ExtNome = "Arquivo PinalMVC (*.pmvc)";
@@ -72,7 +72,7 @@ namespace PinalMVC
                     }
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
@@ -140,7 +140,7 @@ namespace PinalMVC
         {
             try
             {
-                if(listRecentes.SelectedIndex > -1)
+                if (listRecentes.SelectedIndex > -1)
                 {
                     this.Visible = false;
 
@@ -287,6 +287,7 @@ class " + nome + @"{
                             if (pcrud && !perropage)
                             {
                                 indexcrud = @"<br><a href='<?php echo $pmvc_root; ?>" + nome + @"/Create'>Cadastro</a><br>
+<a href='<?php echo $pmvc_root; ?>" + nome + @"/Details/1'>Details 1</a><br>
 <a href='<?php echo $pmvc_root; ?>" + nome + @"/Update/1'>Update 1</a><br>
 <a href='<?php echo $pmvc_root; ?>" + nome + @"/Delete/1'>Delete 1</a><br>";
                             }
@@ -307,6 +308,17 @@ class " + nome + @"{
                             using (StreamWriter writer = new StreamWriter(caminho, false))
                             {
                                 string view = @"<h1>" + nome + @" Create</h1>";
+                                writer.WriteLine(view);
+                                writer.Close();
+                            }
+                            retorno.Add(caminho);
+
+                            pagenamecrud = namefolder + "\\Details" + Form1.Project.views_suffix;
+                            caminho = Form1.ProjectDir + "\\" + pagenamecrud + ".php";
+                            using (StreamWriter writer = new StreamWriter(caminho, false))
+                            {
+                                string view = @"<h1>" + nome + @" Details</h1>
+" + idcrud;
                                 writer.WriteLine(view);
                                 writer.Close();
                             }
@@ -382,6 +394,12 @@ function Create(){
     return array('response' => true, 'data' => 'Create');
 }
 
+function Details($id){
+    " + globals + @"   
+
+    return array('response' => true, 'data' => 'Details '.$id);
+}
+
 function Update($id){
     " + globals + @"   
 
@@ -419,6 +437,13 @@ function Create(){
     " + globals + @"   
     
     $pmvc_title = 'Create " + nome + @"';
+    " + postget + @"
+}
+
+function Details($id){
+    " + globals + @"   
+    
+    $pmvc_title = 'Update " + nome + @" '.$id;
     " + postget + @"
 }
 
@@ -515,7 +540,7 @@ function Index(){
 
             foreach (var item in list)
             {
-                if(item.Contains(name))
+                if (item.Contains(name))
                 {
                     list.Remove(item);
                     break;
@@ -533,7 +558,7 @@ function Index(){
                 }
             }
 
-            if(salvar.Length > 0)
+            if (salvar.Length > 0)
             {
                 salvar = salvar.Substring(0, salvar.Length - 1);
             }

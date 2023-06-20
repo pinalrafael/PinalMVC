@@ -2,8 +2,37 @@
 /*
  * CREATOR: RAFAEL PINAL
  * CREATED: 24/02/2023
- * UPDATED: 19/04/2023
+ * UPDATED: 20/06/2023
  */
+
+if( !function_exists('apache_request_headers') ) {
+  function apache_request_headers() {
+    $arh = array();
+    $rx_http = '/\AHTTP_/';
+
+    foreach($_SERVER as $key => $val) {
+      if( preg_match($rx_http, $key) ) {
+        $arh_key = preg_replace($rx_http, '', $key);
+        $rx_matches = array();
+      // do some nasty string manipulations to restore the original letter case
+      // this should work in most cases
+        $rx_matches = explode('_', $arh_key);
+
+        if( count($rx_matches) > 0 and strlen($arh_key) > 2 ) {
+          foreach($rx_matches as $ak_key => $ak_val) {
+            $rx_matches[$ak_key] = ucfirst($ak_val);
+          }
+
+          $arh_key = implode('-', $rx_matches);
+        }
+
+        $arh[$arh_key] = $val;
+      }
+    }
+
+    return( $arh );
+  }
+}
 
 // Init System
 $pmvc_dir = realpath(dirname(__FILE__));
@@ -13,7 +42,7 @@ $pmvc_config_json = file_get_contents($pmvc_dir."/config.json");
 $pmvc_config = json_decode($pmvc_config_json);
 
 // Load Vars
-$pmvc_version = "1.5.0";// Lib version
+$pmvc_version = "1.5.1";// Lib version
 $pmvc_root = $pmvc_config->root;// Folder root of index.php
 $pmvc_title = $pmvc_config->name; // Title of page.
 $pmvc_pars = array();// Array of URL paramters: URL?par0=p0&par1=p1&par2=p2&par3p3
