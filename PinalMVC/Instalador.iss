@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PinalMVC"
-#define MyAppVersion "1.5.0"
+#define MyAppVersion "1.6.0"
 #define MyAppPublisher "CPSystems, Inc."
 #define MyAppURL "http://www.cpsystems.com.br/"
 #define MyAppExeName "PinalMVC.exe"
