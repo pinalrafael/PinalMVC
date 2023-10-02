@@ -200,7 +200,7 @@ namespace PinalMVC
                     Directory.CreateDirectory(dircontrollers);
                 }
 
-                string dirpageerrors = dirproject + "/" + Form1.Project.page_errors;
+                string dirpageerrors = dirproject + "/Views/" + Form1.Project.page_errors;
                 lblMsg.Text = "Criando: " + dirpageerrors;
                 if (!Directory.Exists(dirpageerrors))
                 {
@@ -293,20 +293,48 @@ include('" + Form1.Project.includes + @"setup.php');
                 lblMsg.Text = "Criando arquivo config.json";
                 Form1.AtualizaConfig(dirproject);
 
-                // Criando pagina de erro
-                lblMsg.Text = "Criando página de erro 404";
-                using (StreamWriter writer = new StreamWriter(dirproject + "\\" + Form1.Project.page_errors + "Error404" + Form1.Project.page_errors_suffix + ".php", false))
-                {
-                    string error = @"<h1>ERROR 404</h1>";
-                    writer.WriteLine(error);
-                    writer.Close();
-                }
-
                 Form1.ProjectDir = dirproject;
 
                 // Criando home
                 lblMsg.Text = "Criando home";
-                Form1.CriarArquivo("Home", true, true, true, true, true, false, false, "Views/Layout/_Layout.php", Form1.Project.api);
+                Form1.CriarArquivo("Home", true, true, true, true, true, false, false, "", "Views/Layout/_Layout.php", Form1.Project.api);
+
+                // Criando arquivo _LayoutError.php
+                lblMsg.Text = "Criando: _LayoutError.php";
+                using (StreamWriter writer = new StreamWriter(dirpagelayout + "/_LayoutError.php", false))
+                {
+                    string _Layout = @"
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
+		<meta name=""viewport"" content=""width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no"">
+		<title>" + Form1.Project.nameproject + @" - <?php echo $pmvc_title; ?></title>
+
+		<!-- PAGE HEADER TAGS -->
+
+		<?php pmvcHead(); ?>
+	</head>
+	<body>
+
+    <!-- HEADER PAGE -->
+
+	<?php require($pmvc_view); ?>
+
+    <!-- FOOTER PAGE -->
+
+	<!-- PAGE SCRIPTS -->
+
+	<?php pmvcBody(); ?>
+	</body>
+</html>";
+                    writer.WriteLine(_Layout);
+                    writer.Close();
+                }
+
+                // Criando página de erro 404
+                lblMsg.Text = "Criando página de erro 404";
+                Form1.CriarArquivo(Form1.Project.page_errors.Replace("/", ""), true, true, true, false, false, true, false, "Error404", "Views/Layout/_LayoutError.php", Form1.Project.api);
 
                 lblMsg.Text = "Concluído com sucesso";
                 this.isCriado = true;

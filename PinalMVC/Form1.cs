@@ -20,7 +20,7 @@ namespace PinalMVC
 {
     public partial class Form1 : Form
     {
-        private string Versao = "1.5.0";
+        private string Versao = "1.6.0";
         public static string Nome = "PinalMVC";
         public static string Ext = ".pmvc";
         public static string ExtNome = "Arquivo PinalMVC (*.pmvc)";
@@ -237,7 +237,7 @@ namespace PinalMVC
             }
         }
 
-        public static List<string> CriarArquivo(string pnome, bool pmodel, bool pview, bool pcontroller, bool pcrud, bool ppostget, bool perropage, bool pagelayout, string layout, bool api)
+        public static List<string> CriarArquivo(string pnome, bool pmodel, bool pview, bool pcontroller, bool pcrud, bool ppostget, bool perropage, bool pagelayout, string errorname, string layout, bool api)
         {
             List<string> retorno = new List<string>();
             string caminho = "";
@@ -276,7 +276,7 @@ class " + nome + @"{
                         string pagename = namefolder + "\\Index" + Form1.Project.views_suffix;
                         if (perropage)
                         {
-                            pagename = Form1.Project.page_errors + nome + Form1.Project.page_errors_suffix;
+                            pagename = "Views/" + Form1.Project.page_errors + errorname + Form1.Project.page_errors_suffix;
                         }
 
                         caminho = Form1.ProjectDir + "\\" + pagename + ".php";
@@ -294,6 +294,12 @@ class " + nome + @"{
 
                             string view = @"<h1>" + nome + @" Index</h1>
 " + indexcrud;
+
+                            if (perropage)
+                            {
+                                view = @"<h1>" + errorname + @"</h1>
+" + indexcrud;
+                            }
                             writer.WriteLine(view);
                             writer.Close();
                         }
@@ -461,6 +467,16 @@ function Delete($id){
     " + postget + @"
 }";
                             }
+                            else
+                            {
+                                crud = @"
+function " + errorname + @"(){
+    " + globals + @"   
+    
+    $pmvc_title = '" + errorname + @"';
+    " + postget + @"
+}";
+                            }
 
                             string controller = @"<?php
 
@@ -475,6 +491,19 @@ function Index(){
 " + crud + @"
 
 ?>";
+                            if (perropage)
+                            {
+                                controller = @"<?php
+
+$pmvc_layout = """ + layout + @""";
+$pmvc_title = """ + nome + @""";
+$pmvc_Model = new " + nome + @"();
+
+" + crud + @"
+
+?>";
+                            }
+
                             writer.WriteLine(controller);
                         }
                         writer.Close();

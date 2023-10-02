@@ -2,7 +2,7 @@
 /*
  * CREATOR: RAFAEL PINAL
  * CREATED: 24/02/2023
- * UPDATED: 20/06/2023
+ * UPDATED: 02/10/2023
  */
 
 if( !function_exists('apache_request_headers') ) {
@@ -42,7 +42,7 @@ $pmvc_config_json = file_get_contents($pmvc_dir."/config.json");
 $pmvc_config = json_decode($pmvc_config_json);
 
 // Load Vars
-$pmvc_version = "1.5.1";// Lib version
+$pmvc_version = "1.6.0";// Lib version
 $pmvc_root = $pmvc_config->root;// Folder root of index.php
 $pmvc_title = $pmvc_config->name; // Title of page.
 $pmvc_pars = array();// Array of URL paramters: URL?par0=p0&par1=p1&par2=p2&par3p3

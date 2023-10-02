@@ -37,7 +37,7 @@ namespace PinalMVC.Classes
             this.models = "Models/";
             this.views = "Views/";
             this.controllers = "Controllers/";
-            this.page_errors = "Views/PagesErrors/";
+            this.page_errors = "PagesErrors/";
             this.pages_layouts = "Views/Layout/";
             this.models_suffix = ".class";
             this.views_suffix = "";

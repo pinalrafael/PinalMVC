@@ -3,7 +3,7 @@
   "models": "Models/",
   "views": "Views/",
   "controllers": "Controllers/",
-  "page_errors": "Views/PagesErrors/",
+  "page_errors": "PagesErrors/",
   "models_suffix": ".class",
   "views_suffix": "",
   "controllers_suffix": "",

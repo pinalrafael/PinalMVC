@@ -73,7 +73,7 @@ namespace PinalMVC
                     layout = Form1.Project.pages_layouts + chbLayout.SelectedItem.ToString();
                 }
 
-                this.Arquivos = Form1.CriarArquivo(Form1.RemoveAcentos(txtNome.Text.Trim()), chbModel.Checked, chbView.Checked, chbController.Checked, chbCRUD.Checked, chbPOSTGET.Checked, chbErrorPage.Checked, chbPageLayout.Checked, layout, chbApi.Checked);
+                this.Arquivos = Form1.CriarArquivo(Form1.RemoveAcentos(txtNome.Text.Trim()), chbModel.Checked, chbView.Checked, chbController.Checked, chbCRUD.Checked, chbPOSTGET.Checked, chbErrorPage.Checked, chbPageLayout.Checked, Form1.RemoveAcentos(txtNome.Text.Trim()), layout, chbApi.Checked);
 
                 this.Close();
             }
